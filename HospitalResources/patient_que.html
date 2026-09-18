@@ -1,0 +1,1991 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Queue | Hospital Command Center</title>
+
+    <link rel="stylesheet" href="patient-queue.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">HC</div>
+
+            <div>
+                <h2>Hospital Command</h2>
+                <span>Resource Center</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="hospital-dashboard.html">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="beds.html">
+                <span>▤</span>
+                Beds
+            </a>
+
+            <a href="doctors.html">
+                <span>⚕</span>
+                Doctors
+            </a>
+
+            <a href="nurses.html">
+                <span>♙</span>
+                Nurses
+            </a>
+
+            <a href="equipment.html">
+                <span>▣</span>
+                Equipment
+            </a>
+
+            <a href="emergency-resources.html">
+                <span>⚠</span>
+                Emergency Resources
+            </a>
+
+            <!-- ACTIVE -->
+            <a href="patient-queue.html" class="active">
+                <span>☷</span>
+                Patient Queue
+            </a>
+
+            <a href="or-availability.html">
+                <span>▥</span>
+                OR Availability
+            </a>
+
+            <a href="hospital-collaboration.html">
+                <span>⇄</span>
+                Hospital Collaboration
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="settings.html">
+                <span>⚙</span>
+                Settings
+            </a>
+
+            <button id="logoutBtn" class="logout-btn">
+                <span>↪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Patient Queue</h1>
+                <p>Monitor patient demand and waiting status</p>
+            </div>
+
+            <div class="hospital-profile">
+
+                <div class="hospital-avatar" id="hospitalInitial">
+                    H
+                </div>
+
+                <div>
+                    <strong id="hospitalName">
+                        Loading Hospital...
+                    </strong>
+
+                    <span id="hospitalLocation">
+                        Hospital
+                    </span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <section class="page-container">
+
+
+            <!-- QUEUE SUMMARY -->
+            <div class="section-heading">
+
+                <div>
+                    <h2>Queue Overview</h2>
+                    <p>Current patients waiting for consultation</p>
+                </div>
+
+                <button class="refresh-btn" id="refreshBtn">
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <div class="queue-summary">
+
+                <!-- EMERGENCY -->
+                <div class="summary-card emergency">
+
+                    <div class="summary-top">
+                        <div class="summary-icon">
+                            ⚠
+                        </div>
+
+                        <span class="priority-label">
+                            Emergency
+                        </span>
+                    </div>
+
+                    <h3 id="emergencyCount">0</h3>
+
+                    <p>Patients waiting</p>
+
+                </div>
+
+
+                <!-- URGENT -->
+                <div class="summary-card urgent">
+
+                    <div class="summary-top">
+                        <div class="summary-icon">
+                            !
+                        </div>
+
+                        <span class="priority-label">
+                            Urgent
+                        </span>
+                    </div>
+
+                    <h3 id="urgentCount">0</h3>
+
+                    <p>Patients waiting</p>
+
+                </div>
+
+
+                <!-- GENERAL -->
+                <div class="summary-card general">
+
+                    <div class="summary-top">
+                        <div class="summary-icon">
+                            +
+                        </div>
+
+                        <span class="priority-label">
+                            General
+                        </span>
+                    </div>
+
+                    <h3 id="generalCount">0</h3>
+
+                    <p>Patients waiting</p>
+
+                </div>
+
+
+                <!-- TOTAL -->
+                <div class="summary-card total">
+
+                    <div class="summary-top">
+                        <div class="summary-icon">
+                            Σ
+                        </div>
+
+                        <span class="priority-label">
+                            Total
+                        </span>
+                    </div>
+
+                    <h3 id="totalCount">0</h3>
+
+                    <p>Patients in queue</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUEUE TABLE -->
+            <div class="queue-section">
+
+                <div class="table-header">
+
+                    <div>
+                        <h2>Current Patient Queue</h2>
+                        <p>
+                            Patients currently waiting for medical attention
+                        </p>
+                    </div>
+
+                    <div class="queue-status">
+                        <span class="live-dot"></span>
+                        Live Queue
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Priority</th>
+                                <th>Waiting Time</th>
+                                <th>Assigned Doctor</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="queueTableBody">
+
+                            <!-- Backend data will be inserted here -->
+
+                            <tr>
+                                <td colspan="6" class="loading">
+                                    Loading patient queue...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUEUE INSIGHT -->
+            <div class="queue-insight">
+
+                <div class="insight-icon">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <h3>Queue Monitoring</h3>
+
+                    <p id="queueInsightText">
+                        Monitoring current patient demand and waiting times.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <script src="patient-queue.js"></script>
+
+</body>
+<body>
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #10233f;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px 16px;
+}
+
+
+/* BRAND */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 5px 10px 30px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: #2f80ed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.brand h2 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.brand span {
+    font-size: 11px;
+    color: #aebed4;
+}
+
+
+/* NAVIGATION */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.navigation a,
+.sidebar-bottom a,
+.logout-btn {
+
+    text-decoration: none;
+
+    color: #b9c7d9;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    width: 100%;
+
+    text-align: left;
+}
+
+.navigation a:hover,
+.sidebar-bottom a:hover,
+.logout-btn:hover {
+
+    background: #193454;
+
+    color: white;
+}
+
+
+/* ACTIVE PAGE */
+
+.navigation a.active {
+
+    background: #2f80ed;
+
+    color: white;
+
+    font-weight: 600;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    margin-left: 250px;
+
+    min-height: 100vh;
+}
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+
+    height: 90px;
+
+    background: white;
+
+    border-bottom: 1px solid #e5eaf1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 35px;
+}
+
+.topbar h1 {
+    font-size: 24px;
+
+    color: #172b4d;
+}
+
+.topbar p {
+    margin-top: 5px;
+
+    font-size: 13px;
+
+    color: #7b8798;
+}
+
+
+/* HOSPITAL PROFILE */
+
+.hospital-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.hospital-avatar {
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    background: #e9f2ff;
+
+    color: #2f80ed;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.hospital-profile strong {
+
+    display: block;
+
+    font-size: 13px;
+
+    color: #26364d;
+}
+
+.hospital-profile span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: #8995a5;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.page-container {
+
+    padding: 30px 35px;
+}
+
+
+/* SECTION HEADING */
+
+.section-heading {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+
+    font-size: 18px;
+
+    color: #172b4d;
+}
+
+.section-heading p {
+
+    font-size: 12px;
+
+    color: #8793a4;
+
+    margin-top: 4px;
+}
+
+
+/* REFRESH BUTTON */
+
+.refresh-btn {
+
+    border: 1px solid #d9e1eb;
+
+    background: white;
+
+    color: #315a8a;
+
+    padding: 9px 15px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+.refresh-btn:hover {
+
+    background: #eef5ff;
+}
+
+
+/* =========================
+   SUMMARY CARDS
+========================= */
+
+.queue-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 28px;
+}
+
+.summary-card {
+
+    background: white;
+
+    border: 1px solid #e4e9f0;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow: 0 2px 7px rgba(30, 55, 90, 0.04);
+}
+
+.summary-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.summary-icon {
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.summary-card.emergency .summary-icon {
+    background: #ffe5e5;
+    color: #dc2626;
+}
+
+.summary-card.urgent .summary-icon {
+    background: #fff0d9;
+    color: #d97706;
+}
+
+.summary-card.general .summary-icon {
+    background: #e7f4ff;
+    color: #2563eb;
+}
+
+.summary-card.total .summary-icon {
+    background: #e9e8ff;
+    color: #4f46e5;
+}
+
+
+.priority-label {
+
+    font-size: 12px;
+
+    color: #68778b;
+
+    font-weight: 600;
+}
+
+
+.summary-card h3 {
+
+    margin-top: 20px;
+
+    font-size: 30px;
+
+    color: #172b4d;
+}
+
+.summary-card p {
+
+    margin-top: 4px;
+
+    color: #8a96a7;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.queue-section {
+
+    background: white;
+
+    border: 1px solid #e4e9f0;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 7px rgba(30, 55, 90, 0.04);
+}
+
+.table-header {
+
+    padding: 20px 22px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.table-header h2 {
+
+    font-size: 17px;
+
+    color: #172b4d;
+}
+
+.table-header p {
+
+    margin-top: 4px;
+
+    color: #8995a5;
+
+    font-size: 12px;
+}
+
+
+/* LIVE STATUS */
+
+.queue-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 12px;
+
+    color: #2f7d32;
+
+    font-weight: 600;
+}
+
+.live-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #36a852;
+}
+
+
+/* TABLE */
+
+.table-wrapper {
+
+    overflow-x: auto;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+thead {
+
+    background: #f8fafc;
+}
+
+th {
+
+    text-align: left;
+
+    padding: 14px 18px;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    color: #78879a;
+
+    font-weight: 600;
+}
+
+td {
+
+    padding: 16px 18px;
+
+    border-top: 1px solid #edf0f4;
+
+    font-size: 13px;
+
+    color: #455468;
+}
+
+tbody tr:hover {
+
+    background: #fafcff;
+}
+
+
+/* PATIENT ID */
+
+.patient-id {
+
+    font-weight: 700;
+
+    color: #234d7d;
+}
+
+
+/* PRIORITY BADGES */
+
+.priority-badge {
+
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.priority-emergency {
+
+    background: #ffe5e5;
+
+    color: #d62828;
+}
+
+.priority-urgent {
+
+    background: #fff0d9;
+
+    color: #c26a00;
+}
+
+.priority-general {
+
+    background: #e7f1ff;
+
+    color: #2867b2;
+}
+
+
+/* WAITING TIME */
+
+.waiting-time {
+
+    font-weight: 600;
+
+    color: #4c5d73;
+}
+
+
+/* DOCTOR */
+
+.doctor-name {
+
+    font-weight: 600;
+
+    color: #334e68;
+}
+
+.department {
+
+    font-size: 11px;
+
+    color: #8995a5;
+
+    margin-top: 3px;
+}
+
+
+/* STATUS */
+
+.status-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: #eaf7ed;
+
+    color: #2d7a38;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.status-badge .status-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #36a852;
+}
+
+
+/* LOADING */
+
+.loading {
+
+    text-align: center;
+
+    padding: 35px;
+
+    color: #8995a5;
+}
+
+
+/* EMPTY */
+
+.empty-queue {
+
+    text-align: center;
+
+    padding: 40px;
+
+    color: #8995a5;
+}
+
+.empty-queue strong {
+
+    display: block;
+
+    color: #4d5d70;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================
+   INSIGHT
+========================= */
+
+.queue-insight {
+
+    margin-top: 22px;
+
+    padding: 17px 20px;
+
+    background: #eef6ff;
+
+    border: 1px solid #d7e8fb;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.insight-icon {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 8px;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #2f80ed;
+}
+
+.queue-insight h3 {
+
+    font-size: 13px;
+
+    color: #25466b;
+}
+
+.queue-insight p {
+
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    color: #6d8199;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .queue-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sidebar {
+
+        width: 70px;
+
+        padding: 20px 8px;
+    }
+
+    .brand div:not(.brand-icon),
+    .navigation a:not(.active) span + *,
+    .navigation a,
+    .sidebar-bottom a,
+    .logout-btn {
+
+        font-size: 0;
+    }
+
+    .brand {
+
+        justify-content: center;
+    }
+
+    .main-content {
+
+        margin-left: 70px;
+    }
+
+    .topbar {
+
+        padding: 0 18px;
+    }
+
+    .page-container {
+
+        padding: 20px 18px;
+    }
+
+    .queue-summary {
+
+        grid-template-columns: 1fr;
+    }
+
+    .hospital-profile {
+
+        display: none;
+    }
+
+    .section-heading {
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+}
+
+
+    </style>
+</body>
+<body>
+    <script>
+
+/* =========================================================
+   PATIENT QUEUE
+   Hospital Command Center
+
+   Backend-connected version
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   CONFIGURATION
+--------------------------------------------------------- */
+
+const API_BASE_URL = "http://localhost:5000/api";
+
+
+/* ---------------------------------------------------------
+   GET LOGGED-IN HOSPITAL
+--------------------------------------------------------- */
+
+function getHospitalFromStorage() {
+
+    const hospital =
+        JSON.parse(localStorage.getItem("hospital"));
+
+    if (!hospital) {
+
+        console.warn(
+            "Hospital login information not found."
+        );
+
+        return null;
+    }
+
+    return hospital;
+}
+
+
+/* ---------------------------------------------------------
+   LOAD HOSPITAL INFORMATION
+--------------------------------------------------------- */
+
+function loadHospitalInfo() {
+
+    const hospital =
+        getHospitalFromStorage();
+
+    if (!hospital) {
+
+        document.getElementById(
+            "hospitalName"
+        ).textContent = "Hospital";
+
+        document.getElementById(
+            "hospitalLocation"
+        ).textContent = "Logged in";
+
+        return;
+    }
+
+
+    /*
+       Your registration/login backend may return
+       different field names.
+
+       Example supported fields:
+       hospitalName
+       name
+       hospital_name
+
+       location
+       city
+    */
+
+    const hospitalName =
+        hospital.hospitalName ||
+        hospital.name ||
+        hospital.hospital_name ||
+        "Hospital";
+
+
+    const location =
+        hospital.location ||
+        hospital.city ||
+        hospital.address ||
+        "Hospital";
+
+
+    document.getElementById(
+        "hospitalName"
+    ).textContent = hospitalName;
+
+
+    document.getElementById(
+        "hospitalLocation"
+    ).textContent = location;
+
+
+    document.getElementById(
+        "hospitalInitial"
+    ).textContent =
+        hospitalName.charAt(0).toUpperCase();
+}
+
+
+/* ---------------------------------------------------------
+   FETCH PATIENT QUEUE
+--------------------------------------------------------- */
+
+async function loadPatientQueue() {
+
+    const tableBody =
+        document.getElementById(
+            "queueTableBody"
+        );
+
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="6" class="loading">
+                Loading patient queue...
+            </td>
+        </tr>
+    `;
+
+
+    const hospital =
+        getHospitalFromStorage();
+
+
+    if (!hospital) {
+
+        showEmptyQueue(
+            "Hospital login information is unavailable."
+        );
+
+        return;
+    }
+
+
+    /*
+       Hospital ID should come from the login
+       / registration backend.
+
+       Possible field names are handled below.
+    */
+
+    const hospitalId =
+        hospital.hospitalId ||
+        hospital.id ||
+        hospital._id;
+
+
+    if (!hospitalId) {
+
+        showEmptyQueue(
+            "Hospital ID not found."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        /*
+           Expected backend route:
+
+           GET
+           /api/hospitals/:hospitalId/patient-queue
+
+           Example:
+
+           http://localhost:5000/api/hospitals/H001/patient-queue
+        */
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/hospitals/${hospitalId}/patient-queue`,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        /*
+                           If your backend uses JWT:
+
+                           "Authorization":
+                               `Bearer ${localStorage.getItem("token")}`
+                        */
+                    }
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+           Backend can return:
+
+           {
+               patients: [...]
+           }
+
+           OR directly:
+
+           [...]
+        */
+
+        const patients =
+            Array.isArray(data)
+                ? data
+                : data.patients || [];
+
+
+        displayQueue(patients);
+
+
+    } catch (error) {
+
+        console.error(
+            "Patient queue error:",
+            error
+        );
+
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="loading">
+                    Unable to load patient queue.
+                    Check the backend connection.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   DISPLAY QUEUE
+--------------------------------------------------------- */
+
+function displayQueue(patients) {
+
+    const tableBody =
+        document.getElementById(
+            "queueTableBody"
+        );
+
+
+    /*
+       Calculate priority counts
+    */
+
+    let emergency = 0;
+
+    let urgent = 0;
+
+    let general = 0;
+
+
+    patients.forEach(patient => {
+
+        const priority =
+            normalizePriority(
+                patient.priority
+            );
+
+
+        if (priority === "Emergency") {
+
+            emergency++;
+
+        } else if (priority === "Urgent") {
+
+            urgent++;
+
+        } else {
+
+            general++;
+        }
+    });
+
+
+    /*
+       Update summary cards
+    */
+
+    document.getElementById(
+        "emergencyCount"
+    ).textContent = emergency;
+
+
+    document.getElementById(
+        "urgentCount"
+    ).textContent = urgent;
+
+
+    document.getElementById(
+        "generalCount"
+    ).textContent = general;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent = patients.length;
+
+
+    /*
+       No patients
+    */
+
+    if (patients.length === 0) {
+
+        showEmptyQueue(
+            "No patients are currently waiting."
+        );
+
+        updateInsight(
+            0,
+            0,
+            0
+        );
+
+        return;
+    }
+
+
+    /*
+       Sort queue by priority and waiting time
+
+       Emergency
+       ↓
+       Urgent
+       ↓
+       General
+    */
+
+    patients.sort(
+        (a, b) => {
+
+            const priorityOrder = {
+
+                "Emergency": 1,
+
+                "Urgent": 2,
+
+                "General": 3
+            };
+
+
+            const priorityA =
+                priorityOrder[
+                    normalizePriority(
+                        a.priority
+                    )
+                ] || 4;
+
+
+            const priorityB =
+                priorityOrder[
+                    normalizePriority(
+                        b.priority
+                    )
+                ] || 4;
+
+
+            if (
+                priorityA !==
+                priorityB
+            ) {
+
+                return (
+                    priorityA -
+                    priorityB
+                );
+            }
+
+
+            return (
+                getWaitingMinutes(b) -
+                getWaitingMinutes(a)
+            );
+        }
+    );
+
+
+    /*
+       Generate table
+    */
+
+    tableBody.innerHTML = "";
+
+
+    patients.forEach(patient => {
+
+        const row =
+            document.createElement("tr");
+
+
+        const patientId =
+            patient.patientId ||
+            patient.patient_id ||
+            patient.id ||
+            "N/A";
+
+
+        const priority =
+            normalizePriority(
+                patient.priority
+            );
+
+
+        const waitingTime =
+            getWaitingMinutes(
+                patient
+            );
+
+
+        const doctor =
+            patient.doctor ||
+            patient.doctorName ||
+            patient.assignedDoctor ||
+            "Not Assigned";
+
+
+        const department =
+            patient.department ||
+            patient.specialization ||
+            "General";
+
+
+        const status =
+            patient.status ||
+            "Waiting";
+
+
+        row.innerHTML = `
+
+            <td>
+                <span class="patient-id">
+                    ${escapeHTML(patientId)}
+                </span>
+            </td>
+
+
+            <td>
+                <span class="
+                    priority-badge
+                    ${getPriorityClass(priority)}
+                ">
+                    ${escapeHTML(priority)}
+                </span>
+            </td>
+
+
+            <td>
+                <span class="waiting-time">
+                    ${waitingTime} min
+                </span>
+            </td>
+
+
+            <td>
+
+                <div class="doctor-name">
+                    ${escapeHTML(doctor)}
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <div class="department">
+                    ${escapeHTML(department)}
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <span class="status-badge">
+
+                    <span class="status-dot"></span>
+
+                    ${escapeHTML(status)}
+
+                </span>
+
+            </td>
+        `;
+
+
+        tableBody.appendChild(row);
+    });
+
+
+    updateInsight(
+        emergency,
+        urgent,
+        general
+    );
+}
+
+
+/* ---------------------------------------------------------
+   NORMALIZE PRIORITY
+--------------------------------------------------------- */
+
+function normalizePriority(priority) {
+
+    if (!priority) {
+
+        return "General";
+    }
+
+
+    const value =
+        String(priority)
+            .trim()
+            .toLowerCase();
+
+
+    if (value === "emergency") {
+
+        return "Emergency";
+    }
+
+
+    if (value === "urgent") {
+
+        return "Urgent";
+    }
+
+
+    return "General";
+}
+
+
+/* ---------------------------------------------------------
+   GET WAITING TIME
+--------------------------------------------------------- */
+
+function getWaitingMinutes(patient) {
+
+    /*
+       Preferred backend field:
+
+       waitingTime
+
+       Example:
+
+       waitingTime: 21
+    */
+
+    if (
+        patient.waitingTime !==
+        undefined
+    ) {
+
+        return Number(
+            patient.waitingTime
+        ) || 0;
+    }
+
+
+    /*
+       Alternative backend field:
+
+       waitingMinutes
+    */
+
+    if (
+        patient.waitingMinutes !==
+        undefined
+    ) {
+
+        return Number(
+            patient.waitingMinutes
+        ) || 0;
+    }
+
+
+    /*
+       Alternative:
+
+       queueJoinedAt
+
+       Calculate waiting time
+       from timestamp.
+    */
+
+    if (patient.queueJoinedAt) {
+
+        const joined =
+            new Date(
+                patient.queueJoinedAt
+            );
+
+
+        const now =
+            new Date();
+
+
+        const minutes =
+            Math.floor(
+                (
+                    now -
+                    joined
+                ) /
+                60000
+            );
+
+
+        return Math.max(
+            0,
+            minutes
+        );
+    }
+
+
+    return 0;
+}
+
+
+/* ---------------------------------------------------------
+   PRIORITY CSS CLASS
+--------------------------------------------------------- */
+
+function getPriorityClass(priority) {
+
+    switch (priority) {
+
+        case "Emergency":
+
+            return "priority-emergency";
+
+
+        case "Urgent":
+
+            return "priority-urgent";
+
+
+        default:
+
+            return "priority-general";
+    }
+}
+
+
+/* ---------------------------------------------------------
+   EMPTY QUEUE
+--------------------------------------------------------- */
+
+function showEmptyQueue(message) {
+
+    document.getElementById(
+        "queueTableBody"
+    ).innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="6"
+                class="empty-queue"
+            >
+
+                <strong>
+                    Queue is empty
+                </strong>
+
+                ${escapeHTML(message)}
+
+            </td>
+
+        </tr>
+    `;
+
+
+    document.getElementById(
+        "emergencyCount"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "urgentCount"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "generalCount"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent = "0";
+}
+
+
+/* ---------------------------------------------------------
+   QUEUE INSIGHT
+--------------------------------------------------------- */
+
+function updateInsight(
+    emergency,
+    urgent,
+    general
+) {
+
+    const insight =
+        document.getElementById(
+            "queueInsightText"
+        );
+
+
+    const total =
+        emergency +
+        urgent +
+        general;
+
+
+    if (total === 0) {
+
+        insight.textContent =
+            "No patients are currently waiting.";
+
+        return;
+    }
+
+
+    if (emergency > 0) {
+
+        insight.textContent =
+            `${emergency} emergency patient(s) are currently waiting. Emergency cases require immediate attention.`;
+
+        return;
+    }
+
+
+    if (urgent > 0) {
+
+        insight.textContent =
+            `${urgent} urgent patient(s) are currently waiting. Monitor doctor availability to reduce waiting time.`;
+
+        return;
+    }
+
+
+    insight.textContent =
+        `${general} general patient(s) are currently waiting.`;
+}
+
+
+/* ---------------------------------------------------------
+   HTML SECURITY
+--------------------------------------------------------- */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* ---------------------------------------------------------
+   REFRESH
+--------------------------------------------------------- */
+
+document
+    .getElementById("refreshBtn")
+    .addEventListener(
+        "click",
+        loadPatientQueue
+    );
+
+
+/* ---------------------------------------------------------
+   LOGOUT
+--------------------------------------------------------- */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        function () {
+
+            localStorage.removeItem(
+                "hospital"
+            );
+
+            localStorage.removeItem(
+                "token"
+            );
+
+            window.location.href =
+                "hospital-login.html";
+        }
+    );
+
+
+/* ---------------------------------------------------------
+   INITIAL LOAD
+--------------------------------------------------------- */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadHospitalInfo();
+
+        loadPatientQueue();
+    }
+);
+
+
+    </script>
+</body>
+</html>
+

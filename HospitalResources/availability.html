@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Availability Management</title>
+    <link rel="stylesheet" href="availability.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">+</div>
+            <div>
+                <h2>HOSPITAL<span>HUB</span></h2>
+                <p>COMMAND CENTER</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Beds</a>
+            <a href="#">Doctors</a>
+            <a href="#">Nurses</a>
+            <a href="#">Equipment</a>
+            <a href="#">Emergency Resources</a>
+            <a href="#">Patient Queues</a>
+            <a href="#">Operating Rooms</a>
+            <a href="#" class="active">Availability</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#">Hospital Profile</a>
+            <a href="#">Logout</a>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Availability Management</h1>
+                <p>Update and manage your hospital's real-time resources.</p>
+            </div>
+
+            <div class="hospital-info">
+                <div class="hospital-icon">+</div>
+                <div>
+                    <strong id="hospitalName">Loading Hospital...</strong>
+                    <span id="hospitalLocation">Loading...</span>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Status -->
+        <section class="status-bar">
+            <div>
+                <span class="status-dot"></span>
+                System Connected
+            </div>
+
+            <span id="lastUpdated">
+                Last updated: --
+            </span>
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- BED AVAILABILITY -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Bed Availability</h2>
+                    <p>Manage the current number of available beds.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="resource-header">
+                        <h3>Bed Availability</h3>
+                        <span class="resource-icon">🛏</span>
+                    </div>
+
+                    <label>Resource</label>
+
+                    <select id="bedResource">
+                        <option value="icu">ICU Bed</option>
+                        <option value="general">General Ward Bed</option>
+                        <option value="emergency">Emergency Bed</option>
+                        <option value="private">Private Room</option>
+                        <option value="isolation">Isolation Bed</option>
+                    </select>
+
+                    <div class="current-value">
+                        <span>Current</span>
+                        <strong id="bedCurrent">--</strong>
+                        <small>Available</small>
+                    </div>
+
+                    <label>New Availability</label>
+
+                    <input
+                        type="number"
+                        id="bedNew"
+                        min="0"
+                        placeholder="Enter availability"
+                    >
+
+                    <label>Reason</label>
+
+                    <input
+                        type="text"
+                        id="bedReason"
+                        placeholder="Example: Two beds discharged"
+                    >
+
+                    <button
+                        class="update-btn"
+                        onclick="updateBed()"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- DOCTORS -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Doctors</h2>
+                    <p>Doctor information is retrieved from the hospital backend.</p>
+                </div>
+            </div>
+
+            <div id="doctorContainer" class="doctor-grid">
+
+                <!-- Doctors will be inserted from backend -->
+
+                <div class="loading">
+                    Loading registered doctors...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- NURSES -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Nurses</h2>
+                    <p>Manage nurse availability by department.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="resource-header">
+                        <h3>Nurse Availability</h3>
+                        <span class="resource-icon">👩‍⚕️</span>
+                    </div>
+
+                    <label>Category</label>
+
+                    <select id="nurseCategory">
+                        <option value="general">General Ward</option>
+                        <option value="icu">ICU</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <div class="current-value">
+                        <span>Current</span>
+                        <strong id="nurseCurrent">--</strong>
+                        <small>Available</small>
+                    </div>
+
+                    <label>New Availability</label>
+
+                    <input
+                        type="number"
+                        id="nurseNew"
+                        min="0"
+                        placeholder="Enter availability"
+                    >
+
+                    <label>Reason</label>
+
+                    <input
+                        type="text"
+                        id="nurseReason"
+                        placeholder="Reason for update"
+                    >
+
+                    <button
+                        class="update-btn"
+                        onclick="updateNurses()"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- EQUIPMENT -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Equipment</h2>
+                    <p>Update available medical equipment.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="resource-header">
+                        <h3>Medical Equipment</h3>
+                        <span class="resource-icon">⚕</span>
+                    </div>
+
+                    <label>Equipment</label>
+
+                    <select id="equipmentType">
+                        <option value="ventilator">Ventilator</option>
+                        <option value="patient-monitor">Patient Monitor</option>
+                        <option value="infusion-pump">Infusion Pump</option>
+                        <option value="ecg">ECG Machine</option>
+                        <option value="defibrillator">Defibrillator</option>
+                    </select>
+
+                    <div class="current-value">
+                        <span>Current</span>
+                        <strong id="equipmentCurrent">--</strong>
+                        <small>Available</small>
+                    </div>
+
+                    <label>New Availability</label>
+
+                    <input
+                        type="number"
+                        id="equipmentNew"
+                        min="0"
+                        placeholder="Enter availability"
+                    >
+
+                    <label>Reason</label>
+
+                    <input
+                        type="text"
+                        id="equipmentReason"
+                        placeholder="Example: Equipment sent for maintenance"
+                    >
+
+                    <button
+                        class="update-btn"
+                        onclick="updateEquipment()"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- EMERGENCY RESOURCES -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Emergency Resources</h2>
+                    <p>Manage resources reserved for emergency situations.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="resource-header">
+                        <h3>Emergency Resources</h3>
+                        <span class="resource-icon">🚑</span>
+                    </div>
+
+                    <label>Resource</label>
+
+                    <select id="emergencyType">
+                        <option value="ambulance">Ambulance</option>
+                        <option value="icu-bed">Emergency ICU Bed</option>
+                        <option value="trauma-kit">Trauma Kit</option>
+                        <option value="blood-unit">Blood Units</option>
+                    </select>
+
+                    <div class="current-value">
+                        <span>Current</span>
+                        <strong id="emergencyCurrent">--</strong>
+                        <small>Available</small>
+                    </div>
+
+                    <label>New Availability</label>
+
+                    <input
+                        type="number"
+                        id="emergencyNew"
+                        min="0"
+                        placeholder="Enter availability"
+                    >
+
+                    <label>Reason</label>
+
+                    <input
+                        type="text"
+                        id="emergencyReason"
+                        placeholder="Reason for update"
+                    >
+
+                    <button
+                        class="update-btn"
+                        onclick="updateEmergency()"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- OPERATING ROOMS -->
+        <!-- ========================= -->
+
+        <section class="management-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Update Operating Rooms</h2>
+                    <p>Manage current operating room availability.</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="resource-header">
+                        <h3>Operating Room</h3>
+                        <span class="resource-icon">🏥</span>
+                    </div>
+
+                    <label>Operating Room</label>
+
+                    <select id="orType">
+                        <option value="or-1">OR 1</option>
+                        <option value="or-2">OR 2</option>
+                        <option value="or-3">OR 3</option>
+                        <option value="or-4">OR 4</option>
+                    </select>
+
+                    <div class="current-value">
+                        <span>Current Status</span>
+                        <strong id="orCurrent">--</strong>
+                    </div>
+
+                    <label>New Status</label>
+
+                    <select id="orNew">
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="reserved">Reserved</option>
+                    </select>
+
+                    <label>Reason</label>
+
+                    <input
+                        type="text"
+                        id="orReason"
+                        placeholder="Reason for update"
+                    >
+
+                    <button
+                        class="update-btn"
+                        onclick="updateOR()"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Notification -->
+        <div id="notification" class="notification"></div>
+
+    </main>
+
+    <script src="availability.js"></script>
+
+</body>
+<body>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #1d2939;
+    display: flex;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #102a43;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 10px 30px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: #2dd4bf;
+    color: #102a43;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo h2 {
+    font-size: 17px;
+    letter-spacing: 1px;
+}
+
+.logo h2 span {
+    color: #2dd4bf;
+}
+
+.logo p {
+    font-size: 8px;
+    color: #9fb3c8;
+    margin-top: 3px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+nav a,
+.sidebar-bottom a {
+    color: #bcccdc;
+    text-decoration: none;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+nav a:hover,
+.sidebar-bottom a:hover {
+    background: #243b53;
+    color: white;
+}
+
+nav a.active {
+    background: #2dd4bf;
+    color: #102a43;
+    font-weight: bold;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid #334e68;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 30px 40px 60px;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.topbar h1 {
+    font-size: 28px;
+    margin-bottom: 7px;
+}
+
+.topbar p {
+    color: #66788a;
+    font-size: 14px;
+}
+
+.hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+.hospital-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: #e6fffa;
+    color: #0f766e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.hospital-info strong {
+    display: block;
+    font-size: 13px;
+}
+
+.hospital-info span {
+    color: #7b8794;
+    font-size: 11px;
+}
+
+
+/* =========================
+   STATUS BAR
+========================= */
+
+.status-bar {
+    background: white;
+    border: 1px solid #e4e7eb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #52606d;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    margin-right: 7px;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+.management-section {
+    margin-bottom: 35px;
+}
+
+.section-heading {
+    margin-bottom: 15px;
+}
+
+.section-heading h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    color: #7b8794;
+    font-size: 13px;
+}
+
+
+/* =========================
+   RESOURCE CARD
+========================= */
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 550px);
+    gap: 20px;
+}
+
+.resource-card {
+    background: white;
+    border: 1px solid #e4e7eb;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 3px 10px rgba(16, 42, 67, 0.04);
+}
+
+.resource-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 18px;
+    margin-bottom: 17px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.resource-header h3 {
+    font-size: 16px;
+}
+
+.resource-icon {
+    font-size: 22px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+label {
+    display: block;
+    font-size: 12px;
+    color: #52606d;
+    margin: 13px 0 7px;
+    font-weight: 600;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #d9e2ec;
+    border-radius: 7px;
+    background: white;
+    color: #243b53;
+    font-size: 13px;
+    outline: none;
+}
+
+select:focus,
+input:focus {
+    border-color: #2dd4bf;
+}
+
+
+/* =========================
+   CURRENT VALUE
+========================= */
+
+.current-value {
+    background: #f0fdfb;
+    border: 1px solid #ccfbf1;
+    border-radius: 9px;
+    margin-top: 15px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.current-value span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.current-value strong {
+    font-size: 23px;
+    color: #0f766e;
+}
+
+.current-value small {
+    color: #64748b;
+    font-size: 11px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.update-btn {
+    width: 100%;
+    border: none;
+    border-radius: 7px;
+    padding: 12px;
+    margin-top: 17px;
+    background: #0f766e;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.update-btn:hover {
+    background: #115e59;
+}
+
+.update-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   DOCTORS
+========================= */
+
+.doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.doctor-card {
+    background: white;
+    border: 1px solid #e4e7eb;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.doctor-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.doctor-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #e6fffa;
+    color: #0f766e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.doctor-name {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.doctor-specialization {
+    color: #7b8794;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.doctor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.status-available {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.status-busy {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.status-off {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.doctor-card select {
+    margin-top: 5px;
+}
+
+.doctor-update {
+    margin-top: 12px;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    color: #66788a;
+    text-align: center;
+}
+
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+.notification {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: #102a43;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+        padding: 25px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+    </style>
+</body>
+<body>
+    <script>
+/* =========================================================
+   BACKEND CONFIGURATION
+========================================================= */
+
+// Change this to your backend URL
+const API_BASE_URL = "http://localhost:5000/api";
+
+// If you store the logged-in hospital ID in localStorage:
+const hospitalId = localStorage.getItem("hospitalId");
+
+
+/* =========================================================
+   PAGE INITIALIZATION
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadHospitalDetails();
+    loadAvailability();
+    loadDoctors();
+
+});
+
+
+/* =========================================================
+   HOSPITAL DETAILS
+========================================================= */
+
+async function loadHospitalDetails() {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/${hospitalId}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Unable to load hospital details");
+        }
+
+        const hospital = await response.json();
+
+        document.getElementById("hospitalName").textContent =
+            hospital.name || "Hospital";
+
+        document.getElementById("hospitalLocation").textContent =
+            hospital.location || "Location unavailable";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById("hospitalName").textContent =
+            "Hospital";
+
+        document.getElementById("hospitalLocation").textContent =
+            "Backend connection unavailable";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD ALL AVAILABILITY
+========================================================= */
+
+async function loadAvailability() {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/${hospitalId}/availability`
+        );
+
+        if (!response.ok) {
+            throw new Error("Unable to load availability");
+        }
+
+        const data = await response.json();
+
+        /*
+            Expected backend structure:
+
+            {
+                beds: {
+                    icu: 4,
+                    general: 18,
+                    emergency: 5,
+                    private: 7,
+                    isolation: 2
+                },
+
+                nurses: {
+                    general: 12,
+                    icu: 8,
+                    emergency: 5,
+                    other: 2
+                },
+
+                equipment: {
+                    ventilator: 8,
+                    "patient-monitor": 17,
+                    "infusion-pump": 32,
+                    ecg: 5,
+                    defibrillator: 4
+                },
+
+                emergency: {
+                    ambulance: 3,
+                    "icu-bed": 4,
+                    "trauma-kit": 8,
+                    "blood-unit": 25
+                },
+
+                operatingRooms: {
+                    "or-1": "available",
+                    "or-2": "occupied",
+                    "or-3": "maintenance",
+                    "or-4": "available"
+                }
+            }
+        */
+
+        window.availabilityData = data;
+
+        updateBedDisplay();
+        updateNurseDisplay();
+        updateEquipmentDisplay();
+        updateEmergencyDisplay();
+        updateORDisplay();
+
+        document.getElementById("lastUpdated").textContent =
+            "Last updated: " + new Date().toLocaleString();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showNotification(
+            "Unable to load availability from backend."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BED
+========================================================= */
+
+document
+    .getElementById("bedResource")
+    .addEventListener("change", updateBedDisplay);
+
+
+function updateBedDisplay() {
+
+    if (!window.availabilityData) return;
+
+    const resource =
+        document.getElementById("bedResource").value;
+
+    const value =
+        window.availabilityData.beds?.[resource];
+
+    document.getElementById("bedCurrent").textContent =
+        value !== undefined ? value : "--";
+
+}
+
+
+async function updateBed() {
+
+    const resource =
+        document.getElementById("bedResource").value;
+
+    const newAvailability =
+        Number(document.getElementById("bedNew").value);
+
+    const reason =
+        document.getElementById("bedReason").value.trim();
+
+    if (isNaN(newAvailability) || newAvailability < 0) {
+
+        showNotification("Enter a valid availability.");
+        return;
+
+    }
+
+    await sendAvailabilityUpdate(
+        "beds",
+        resource,
+        newAvailability,
+        reason
+    );
+
+}
+
+
+/* =========================================================
+   NURSES
+========================================================= */
+
+document
+    .getElementById("nurseCategory")
+    .addEventListener("change", updateNurseDisplay);
+
+
+function updateNurseDisplay() {
+
+    if (!window.availabilityData) return;
+
+    const category =
+        document.getElementById("nurseCategory").value;
+
+    const value =
+        window.availabilityData.nurses?.[category];
+
+    document.getElementById("nurseCurrent").textContent =
+        value !== undefined ? value : "--";
+
+}
+
+
+async function updateNurses() {
+
+    const category =
+        document.getElementById("nurseCategory").value;
+
+    const newAvailability =
+        Number(document.getElementById("nurseNew").value);
+
+    const reason =
+        document.getElementById("nurseReason").value.trim();
+
+    if (isNaN(newAvailability) || newAvailability < 0) {
+
+        showNotification("Enter a valid availability.");
+        return;
+
+    }
+
+    await sendAvailabilityUpdate(
+        "nurses",
+        category,
+        newAvailability,
+        reason
+    );
+
+}
+
+
+/* =========================================================
+   EQUIPMENT
+========================================================= */
+
+document
+    .getElementById("equipmentType")
+    .addEventListener("change", updateEquipmentDisplay);
+
+
+function updateEquipmentDisplay() {
+
+    if (!window.availabilityData) return;
+
+    const equipment =
+        document.getElementById("equipmentType").value;
+
+    const value =
+        window.availabilityData.equipment?.[equipment];
+
+    document.getElementById("equipmentCurrent").textContent =
+        value !== undefined ? value : "--";
+
+}
+
+
+async function updateEquipment() {
+
+    const equipment =
+        document.getElementById("equipmentType").value;
+
+    const newAvailability =
+        Number(document.getElementById("equipmentNew").value);
+
+    const reason =
+        document.getElementById("equipmentReason").value.trim();
+
+    if (isNaN(newAvailability) || newAvailability < 0) {
+
+        showNotification("Enter a valid availability.");
+        return;
+
+    }
+
+    await sendAvailabilityUpdate(
+        "equipment",
+        equipment,
+        newAvailability,
+        reason
+    );
+
+}
+
+
+/* =========================================================
+   EMERGENCY RESOURCES
+========================================================= */
+
+document
+    .getElementById("emergencyType")
+    .addEventListener("change", updateEmergencyDisplay);
+
+
+function updateEmergencyDisplay() {
+
+    if (!window.availabilityData) return;
+
+    const resource =
+        document.getElementById("emergencyType").value;
+
+    const value =
+        window.availabilityData.emergency?.[resource];
+
+    document.getElementById("emergencyCurrent").textContent =
+        value !== undefined ? value : "--";
+
+}
+
+
+async function updateEmergency() {
+
+    const resource =
+        document.getElementById("emergencyType").value;
+
+    const newAvailability =
+        Number(document.getElementById("emergencyNew").value);
+
+    const reason =
+        document.getElementById("emergencyReason").value.trim();
+
+    if (isNaN(newAvailability) || newAvailability < 0) {
+
+        showNotification("Enter a valid availability.");
+        return;
+
+    }
+
+    await sendAvailabilityUpdate(
+        "emergency",
+        resource,
+        newAvailability,
+        reason
+    );
+
+}
+
+
+/* =========================================================
+   OPERATING ROOMS
+========================================================= */
+
+document
+    .getElementById("orType")
+    .addEventListener("change", updateORDisplay);
+
+
+function updateORDisplay() {
+
+    if (!window.availabilityData) return;
+
+    const room =
+        document.getElementById("orType").value;
+
+    const value =
+        window.availabilityData.operatingRooms?.[room];
+
+    document.getElementById("orCurrent").textContent =
+        value
+            ? formatORStatus(value)
+            : "--";
+
+}
+
+
+function formatORStatus(status) {
+
+    return status
+        .charAt(0)
+        .toUpperCase() + status.slice(1);
+
+}
+
+
+async function updateOR() {
+
+    const room =
+        document.getElementById("orType").value;
+
+    const newStatus =
+        document.getElementById("orNew").value;
+
+    const reason =
+        document.getElementById("orReason").value.trim();
+
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/${hospitalId}/availability`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    resourceType: "operatingRooms",
+
+                    resourceId: room,
+
+                    value: newStatus,
+
+                    reason: reason
+
+                })
+
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error("OR update failed");
+        }
+
+
+        /*
+            Immediately update frontend
+        */
+
+        if (!window.availabilityData.operatingRooms) {
+            window.availabilityData.operatingRooms = {};
+        }
+
+        window.availabilityData
+            .operatingRooms[room] = newStatus;
+
+
+        updateORDisplay();
+
+        document.getElementById("orReason").value = "";
+
+        document.getElementById("lastUpdated").textContent =
+            "Last updated: " + new Date().toLocaleString();
+
+        showNotification(
+            "Operating room availability updated."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showNotification(
+            "Unable to update operating room."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   GENERIC AVAILABILITY UPDATE
+========================================================= */
+
+async function sendAvailabilityUpdate(
+    resourceType,
+    resourceId,
+    value,
+    reason
+) {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/${hospitalId}/availability`,
+            {
+
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    resourceType: resourceType,
+
+                    resourceId: resourceId,
+
+                    value: value,
+
+                    reason: reason
+
+                })
+
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error("Availability update failed");
+        }
+
+
+        /*
+            Update local frontend data immediately.
+        */
+
+        if (!window.availabilityData[resourceType]) {
+
+            window.availabilityData[resourceType] = {};
+
+        }
+
+        window.availabilityData[resourceType][resourceId] =
+            value;
+
+
+        /*
+            Refresh relevant display.
+        */
+
+        updateBedDisplay();
+        updateNurseDisplay();
+        updateEquipmentDisplay();
+        updateEmergencyDisplay();
+        updateORDisplay();
+
+
+        /*
+            Clear inputs.
+        */
+
+        document.getElementById("bedNew").value = "";
+        document.getElementById("bedReason").value = "";
+
+        document.getElementById("nurseNew").value = "";
+        document.getElementById("nurseReason").value = "";
+
+        document.getElementById("equipmentNew").value = "";
+        document.getElementById("equipmentReason").value = "";
+
+        document.getElementById("emergencyNew").value = "";
+        document.getElementById("emergencyReason").value = "";
+
+
+        document.getElementById("lastUpdated").textContent =
+            "Last updated: " + new Date().toLocaleString();
+
+
+        showNotification(
+            `${resourceType} availability updated successfully.`
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showNotification(
+            "Update failed. Check backend connection."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DOCTORS — BACKEND DATA
+========================================================= */
+
+async function loadDoctors() {
+
+    const container =
+        document.getElementById("doctorContainer");
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/${hospitalId}/doctors`
+        );
+
+
+        if (!response.ok) {
+            throw new Error("Unable to load doctors");
+        }
+
+
+        const doctors = await response.json();
+
+
+        container.innerHTML = "";
+
+
+        if (!doctors || doctors.length === 0) {
+
+            container.innerHTML = `
+                <div class="loading">
+                    No doctors registered for this hospital.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        doctors.forEach(doctor => {
+
+            container.innerHTML += createDoctorCard(doctor);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="loading">
+                Unable to load registered doctors.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DOCTOR CARD
+========================================================= */
+
+function createDoctorCard(doctor) {
+
+    const statusClass =
+        getDoctorStatusClass(doctor.status);
+
+
+    const initials =
+        getInitials(doctor.name);
+
+
+    return `
+
+        <div class="doctor-card"
+             data-doctor-id="${doctor.id}">
+
+            <div class="doctor-top">
+
+                <div class="doctor-avatar">
+                    ${initials}
+                </div>
+
+                <div>
+
+                    <div class="doctor-name">
+                        ${doctor.name}
+                    </div>
+
+                    <div class="doctor-specialization">
+                        ${doctor.specialization || "Specialization not specified"}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="doctor-status ${statusClass}">
+                ● ${formatDoctorStatus(doctor.status)}
+            </div>
+
+
+            <label>
+                Availability Status
+            </label>
+
+            <select class="doctor-status-select">
+
+                <option value="available"
+                    ${doctor.status === "available" ? "selected" : ""}>
+                    Available
+                </option>
+
+                <option value="consultation"
+                    ${doctor.status === "consultation" ? "selected" : ""}>
+                    In Consultation
+                </option>
+
+                <option value="surgery"
+                    ${doctor.status === "surgery" ? "selected" : ""}>
+                    In Surgery
+                </option>
+
+                <option value="emergency"
+                    ${doctor.status === "emergency" ? "selected" : ""}>
+                    Emergency Duty
+                </option>
+
+                <option value="off"
+                    ${doctor.status === "off" ? "selected" : ""}>
+                    Off Duty
+                </option>
+
+            </select>
+
+
+            <label>
+                Reason
+            </label>
+
+            <input
+                type="text"
+                class="doctor-reason"
+                placeholder="Reason for status update"
+            >
+
+
+            <button
+                class="update-btn doctor-update"
+                onclick="updateDoctor('${doctor.id}')"
+            >
+                UPDATE
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   UPDATE DOCTOR
+========================================================= */
+
+async function updateDoctor(doctorId) {
+
+    const card =
+        document.querySelector(
+            `.doctor-card[data-doctor-id="${doctorId}"]`
+        );
+
+
+    if (!card) return;
+
+
+    const status =
+        card.querySelector(
+            ".doctor-status-select"
+        ).value;
+
+
+    const reason =
+        card.querySelector(
+            ".doctor-reason"
+        ).value.trim();
+
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/doctors/${doctorId}/availability`,
+            {
+
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    status: status,
+
+                    reason: reason
+
+                })
+
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error("Doctor update failed");
+        }
+
+
+        /*
+            Visually change doctor status immediately.
+        */
+
+        const statusElement =
+            card.querySelector(".doctor-status");
+
+
+        statusElement.className =
+            `doctor-status ${getDoctorStatusClass(status)}`;
+
+
+        statusElement.textContent =
+            `● ${formatDoctorStatus(status)}`;
+
+
+        card.querySelector(".doctor-reason").value = "";
+
+
+        document.getElementById("lastUpdated").textContent =
+            "Last updated: " + new Date().toLocaleString();
+
+
+        showNotification(
+            "Doctor availability updated successfully."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showNotification(
+            "Unable to update doctor availability."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DOCTOR STATUS HELPERS
+========================================================= */
+
+function getDoctorStatusClass(status) {
+
+    if (status === "available") {
+        return "status-available";
+    }
+
+    if (
+        status === "consultation" ||
+        status === "surgery" ||
+        status === "emergency"
+    ) {
+        return "status-busy";
+    }
+
+    return "status-off";
+
+}
+
+
+function formatDoctorStatus(status) {
+
+    const labels = {
+
+        available: "Available",
+
+        consultation: "In Consultation",
+
+        surgery: "In Surgery",
+
+        emergency: "Emergency Duty",
+
+        off: "Off Duty"
+
+    };
+
+    return labels[status] || status;
+
+}
+
+
+/* =========================================================
+   INITIALS
+========================================================= */
+
+function getInitials(name) {
+
+    if (!name) return "DR";
+
+    const parts = name.trim().split(" ");
+
+    if (parts.length === 1) {
+        return parts[0].substring(0, 2).toUpperCase();
+    }
+
+    return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+    ).toUpperCase();
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+function showNotification(message) {
+
+    const notification =
+        document.getElementById("notification");
+
+
+    notification.textContent = message;
+
+    notification.classList.add("show");
+
+
+    setTimeout(() => {
+
+        notification.classList.remove("show");
+
+    }, 3000);
+
+}
+    </script>
+</body>
+</html>

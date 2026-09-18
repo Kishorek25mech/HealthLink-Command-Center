@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demand & Resource Intelligence</title>
+
+    <link rel="stylesheet" href="demand.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">✚</div>
+            <div>
+                <h2>MEDLINK</h2>
+                <span>Hospital Network</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="hospital-dashboard.html">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="beds.html">
+                <span>🛏</span>
+                Beds
+            </a>
+
+            <a href="doctors.html">
+                <span>⚕</span>
+                Doctors
+            </a>
+
+            <a href="nurses.html">
+                <span>♙</span>
+                Nurses
+            </a>
+
+            <a href="equipment.html">
+                <span>▣</span>
+                Equipment
+            </a>
+
+            <a href="emergency-resources.html">
+                <span>🚑</span>
+                Emergency Resources
+            </a>
+
+            <a href="patient-queue.html">
+                <span>☷</span>
+                Patient Queue
+            </a>
+
+            <a href="operating-rooms.html">
+                <span>▤</span>
+                Operating Rooms
+            </a>
+
+            <a href="availability.html">
+                <span>↻</span>
+                Availability
+            </a>
+
+            <a href="demand.html" class="active">
+                <span>◉</span>
+                Demand Intelligence
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="hospital-profile.html">
+                ⚙ Settings
+            </a>
+
+            <button id="logoutBtn">
+                ↪ Logout
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <div>
+                <h1>Demand & Resource Intelligence</h1>
+                <p>Real-time hospital demand and resource monitoring</p>
+            </div>
+
+            <div class="hospital-info">
+                <div class="status-dot"></div>
+
+                <div>
+                    <strong id="hospitalName">
+                        Loading Hospital...
+                    </strong>
+
+                    <span>● Live Monitoring</span>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <section class="content">
+
+
+            <!-- CURRENT CONDITION -->
+            <div class="section-heading">
+                <div>
+                    <h2>Current Hospital Condition</h2>
+                    <p>Patient demand compared with normal hospital capacity</p>
+                </div>
+
+                <div class="live-indicator">
+                    <span></span>
+                    LIVE
+                </div>
+            </div>
+
+
+            <div class="condition-card">
+
+                <div class="arrival-section">
+
+                    <div class="icon-box">
+                        ↗
+                    </div>
+
+                    <div>
+                        <p class="label">Patient Arrival Rate</p>
+
+                        <div class="arrival-values">
+
+                            <div>
+                                <span>Normal</span>
+                                <strong id="normalArrival">
+                                    -- /hour
+                                </strong>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div>
+                                <span>Current</span>
+                                <strong id="currentArrival">
+                                    -- /hour
+                                </strong>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="surge-box" id="surgeBox">
+
+                    <div class="warning-icon">
+                        ⚠
+                    </div>
+
+                    <div>
+                        <strong id="surgeTitle">
+                            ANALYZING DEMAND
+                        </strong>
+
+                        <p id="surgeMessage">
+                            Calculating current hospital condition...
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESOURCE PRESSURE -->
+            <div class="section-heading pressure-heading">
+
+                <div>
+                    <h2>Resource Pressure</h2>
+                    <p>
+                        Current utilization of critical hospital resources
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="resource-grid">
+
+
+                <!-- EMERGENCY BEDS -->
+                <div class="resource-card">
+
+                    <div class="resource-header">
+
+                        <div>
+                            <span class="resource-icon">🛏</span>
+                            <h3>Emergency Beds</h3>
+                        </div>
+
+                        <strong id="bedPressure">
+                            --%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div
+                            class="progress-bar"
+                            id="bedProgress">
+                        </div>
+                    </div>
+
+                    <div class="resource-footer">
+
+                        <span id="bedStatus">
+                            Calculating...
+                        </span>
+
+                        <span id="bedDetails">
+                            --
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOCTORS -->
+                <div class="resource-card">
+
+                    <div class="resource-header">
+
+                        <div>
+                            <span class="resource-icon">⚕</span>
+                            <h3>Doctors</h3>
+                        </div>
+
+                        <strong id="doctorPressure">
+                            --%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div
+                            class="progress-bar"
+                            id="doctorProgress">
+                        </div>
+                    </div>
+
+                    <div class="resource-footer">
+
+                        <span id="doctorStatus">
+                            Calculating...
+                        </span>
+
+                        <span id="doctorDetails">
+                            --
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NURSES -->
+                <div class="resource-card">
+
+                    <div class="resource-header">
+
+                        <div>
+                            <span class="resource-icon">♙</span>
+                            <h3>Nurses</h3>
+                        </div>
+
+                        <strong id="nursePressure">
+                            --%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div
+                            class="progress-bar"
+                            id="nurseProgress">
+                        </div>
+                    </div>
+
+                    <div class="resource-footer">
+
+                        <span id="nurseStatus">
+                            Calculating...
+                        </span>
+
+                        <span id="nurseDetails">
+                            --
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EQUIPMENT -->
+                <div class="resource-card">
+
+                    <div class="resource-header">
+
+                        <div>
+                            <span class="resource-icon">▣</span>
+                            <h3>Equipment</h3>
+                        </div>
+
+                        <strong id="equipmentPressure">
+                            --%
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div
+                            class="progress-bar"
+                            id="equipmentProgress">
+                        </div>
+                    </div>
+
+                    <div class="resource-footer">
+
+                        <span id="equipmentStatus">
+                            Calculating...
+                        </span>
+
+                        <span id="equipmentDetails">
+                            --
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOCTOR DEMAND ANALYSIS -->
+            <div class="analysis-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Doctor Demand Analysis</h2>
+                        <p>
+                            Current doctor availability from hospital records
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="doctor-summary">
+
+                    <div class="summary-card">
+                        <span>Total Doctors</span>
+                        <strong id="totalDoctors">--</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <span>Available</span>
+                        <strong id="availableDoctors">--</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <span>In Consultation</span>
+                        <strong id="consultationDoctors">--</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <span>Emergency Duty</span>
+                        <strong id="emergencyDoctors">--</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <span>In Surgery</span>
+                        <strong id="surgeryDoctors">--</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="doctor-table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Status</th>
+                                <th>Current Assignment</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="doctorTable">
+
+                            <tr>
+                                <td colspan="4">
+                                    Loading doctor information...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- INTELLIGENCE ALERT -->
+            <div class="intelligence-card">
+
+                <div class="intelligence-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <h3>Resource Intelligence</h3>
+
+                    <p id="intelligenceMessage">
+                        Analyzing hospital resources...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="demand.js"></script>
+
+</body>
+<body>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #ffffff;
+    border-right: 1px solid #e4e8ef;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 100;
+}
+
+
+/* LOGO */
+
+.logo {
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 20px 24px;
+
+    border-bottom: 1px solid #edf0f5;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+
+    background: #176bff;
+    color: white;
+
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    margin-right: 12px;
+}
+
+.logo h2 {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    font-size: 11px;
+    color: #8a94a6;
+}
+
+
+/* NAVIGATION */
+
+nav {
+    padding: 20px 12px;
+    overflow-y: auto;
+}
+
+nav a {
+    text-decoration: none;
+    color: #687386;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    margin-bottom: 5px;
+
+    font-size: 14px;
+}
+
+nav a span {
+    width: 22px;
+    text-align: center;
+}
+
+nav a:hover {
+    background: #f0f5ff;
+    color: #176bff;
+}
+
+nav a.active {
+    background: #eaf2ff;
+    color: #176bff;
+    font-weight: 600;
+}
+
+
+/* SIDEBAR BOTTOM */
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 15px;
+
+    border-top: 1px solid #edf0f5;
+}
+
+.sidebar-bottom a,
+.sidebar-bottom button {
+    width: 100%;
+
+    display: block;
+
+    border: none;
+    background: transparent;
+
+    text-decoration: none;
+    color: #687386;
+
+    padding: 12px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+}
+
+.sidebar-bottom a:hover,
+.sidebar-bottom button:hover {
+    background: #f3f5f8;
+}
+
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 250px;
+    min-height: 100vh;
+}
+
+
+/* TOP BAR */
+
+.topbar {
+    height: 90px;
+
+    background: white;
+
+    border-bottom: 1px solid #e4e8ef;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 35px;
+}
+
+.topbar h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.topbar p {
+    font-size: 13px;
+    color: #8a94a6;
+}
+
+
+/* HOSPITAL INFO */
+
+.hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+
+    background: #22b573;
+
+    border-radius: 50%;
+}
+
+.hospital-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.hospital-info span {
+    display: block;
+    font-size: 11px;
+    color: #22a86b;
+
+    margin-top: 3px;
+}
+
+
+/* ================= CONTENT ================= */
+
+.content {
+    padding: 30px 35px;
+}
+
+
+/* SECTION HEADING */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    font-size: 12px;
+    color: #8a94a6;
+}
+
+
+/* LIVE */
+
+.live-indicator {
+    font-size: 11px;
+    color: #20a66a;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.live-indicator span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+    background: #20a66a;
+}
+
+
+/* ================= CONDITION ================= */
+
+.condition-card {
+    background: white;
+
+    border: 1px solid #e4e8ef;
+
+    border-radius: 12px;
+
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 35px;
+}
+
+
+.arrival-section {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.icon-box {
+    width: 55px;
+    height: 55px;
+
+    background: #edf4ff;
+
+    color: #176bff;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+.label {
+    font-size: 12px;
+    color: #8a94a6;
+
+    margin-bottom: 10px;
+}
+
+.arrival-values {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.arrival-values span {
+    display: block;
+
+    font-size: 11px;
+    color: #8a94a6;
+
+    margin-bottom: 4px;
+}
+
+.arrival-values strong {
+    font-size: 22px;
+}
+
+.divider {
+    width: 1px;
+    height: 35px;
+    background: #e1e5eb;
+}
+
+
+/* SURGE */
+
+.surge-box {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 330px;
+
+    padding: 15px 18px;
+
+    background: #fff6e8;
+
+    border: 1px solid #ffd99a;
+
+    border-radius: 9px;
+}
+
+.warning-icon {
+    width: 38px;
+    height: 38px;
+
+    background: #ffad32;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.surge-box strong {
+    font-size: 13px;
+    color: #b86a00;
+}
+
+.surge-box p {
+    font-size: 11px;
+    color: #8a6b3b;
+
+    margin-top: 4px;
+}
+
+
+/* ================= RESOURCE PRESSURE ================= */
+
+.pressure-heading {
+    margin-top: 5px;
+}
+
+
+.resource-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 35px;
+}
+
+
+.resource-card {
+    background: white;
+
+    border: 1px solid #e4e8ef;
+
+    border-radius: 12px;
+
+    padding: 22px;
+}
+
+
+.resource-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.resource-header > div {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.resource-icon {
+    font-size: 20px;
+}
+
+.resource-header h3 {
+    font-size: 14px;
+}
+
+.resource-header > strong {
+    font-size: 20px;
+}
+
+
+/* PROGRESS BAR */
+
+.progress-container {
+    width: 100%;
+    height: 9px;
+
+    background: #edf0f4;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+
+    width: 0%;
+
+    border-radius: 20px;
+
+    transition: width 0.8s ease;
+}
+
+
+/* STATUS */
+
+.resource-footer {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+    font-size: 11px;
+}
+
+.resource-footer span:first-child {
+    font-weight: 600;
+}
+
+.resource-footer span:last-child {
+    color: #8a94a6;
+}
+
+
+/* PRESSURE STATES */
+
+.pressure-normal {
+    background: #26a96c;
+}
+
+.pressure-warning {
+    background: #f0a12b;
+}
+
+.pressure-critical {
+    background: #e14d4d;
+}
+
+
+/* ================= DOCTOR ANALYSIS ================= */
+
+.analysis-section {
+    margin-top: 10px;
+}
+
+
+.doctor-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+.summary-card {
+    background: white;
+
+    border: 1px solid #e4e8ef;
+
+    border-radius: 10px;
+
+    padding: 18px;
+}
+
+.summary-card span {
+    display: block;
+
+    font-size: 11px;
+
+    color: #8a94a6;
+
+    margin-bottom: 8px;
+}
+
+.summary-card strong {
+    font-size: 23px;
+}
+
+
+/* DOCTOR TABLE */
+
+.doctor-table-container {
+    background: white;
+
+    border: 1px solid #e4e8ef;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f8f9fb;
+}
+
+th {
+    text-align: left;
+
+    font-size: 11px;
+
+    color: #727d8e;
+
+    padding: 15px 18px;
+
+    font-weight: 600;
+}
+
+td {
+    padding: 16px 18px;
+
+    font-size: 12px;
+
+    border-top: 1px solid #edf0f4;
+}
+
+.status {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+.status.available {
+    background: #e7f8ef;
+    color: #1b9a60;
+}
+
+.status.consultation {
+    background: #fff3dd;
+    color: #c27b09;
+}
+
+.status.surgery {
+    background: #eeeaff;
+    color: #6851d8;
+}
+
+.status.emergency {
+    background: #ffe8e8;
+    color: #d64040;
+}
+
+.status.off-duty {
+    background: #edf0f3;
+    color: #77808c;
+}
+
+
+/* ================= INTELLIGENCE ================= */
+
+.intelligence-card {
+    margin-top: 25px;
+
+    padding: 22px;
+
+    border-radius: 12px;
+
+    background: #eef5ff;
+
+    border: 1px solid #d7e5ff;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.intelligence-icon {
+    width: 45px;
+    height: 45px;
+
+    background: #176bff;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+.intelligence-card h3 {
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.intelligence-card p {
+    font-size: 12px;
+
+    color: #647087;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px) {
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo div:not(.logo-icon),
+    nav a:not(.active)::after {
+        display: none;
+    }
+
+    .logo {
+        padding: 15px;
+    }
+
+    nav a {
+        justify-content: center;
+    }
+
+    nav a span {
+        margin: 0;
+    }
+
+    .main {
+        margin-left: 70px;
+    }
+
+    .condition-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .surge-box {
+        width: 100%;
+    }
+
+    .doctor-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 15px;
+        height: auto;
+    }
+
+    .hospital-info {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .doctor-table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 700px;
+    }
+
+}
+    </style>
+</body>
+<body>
+    <script>
+        /* ============================================
+   DEMAND & RESOURCE INTELLIGENCE
+   ============================================ */
+
+
+/*
+    BACKEND ENDPOINT
+
+    Change this URL according to your backend.
+
+    Example:
+    GET /api/hospital/dashboard
+
+    Expected response:
+
+    {
+        "hospital": {
+            "name": "Kongu Medical Centre"
+        },
+
+        "patientFlow": {
+            "normalPerHour": 12,
+            "currentPerHour": 28
+        },
+
+        "beds": {
+            "emergency": {
+                "total": 20,
+                "available": 2
+            }
+        },
+
+        "doctors": [
+            {
+                "name": "Dr. Priya Kumar",
+                "specialization": "Cardiology",
+                "status": "Available",
+                "assignment": "Emergency Department"
+            }
+        ],
+
+        "nurses": {
+            "total": 20,
+            "available": 4
+        },
+
+        "equipment": {
+            "total": 40,
+            "available": 13
+        }
+    }
+*/
+
+
+const API_URL = "/api/hospital/dashboard";
+
+
+/* ============================================
+   FETCH HOSPITAL DATA
+   ============================================ */
+
+async function loadDemandData() {
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            method: "GET",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            credentials: "include"
+
+        });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to retrieve hospital data"
+            );
+
+        }
+
+
+        const data = await response.json();
+
+
+        updateHospitalInformation(data);
+
+        updatePatientArrival(data);
+
+        updateResourcePressure(data);
+
+        updateDoctorInformation(data);
+
+        generateIntelligence(data);
+
+
+    } catch (error) {
+
+        console.error(
+            "Demand page error:",
+            error
+        );
+
+        showDemoMessage();
+
+    }
+
+}
+
+
+/* ============================================
+   HOSPITAL NAME
+   ============================================ */
+
+function updateHospitalInformation(data) {
+
+    const hospitalName =
+        document.getElementById("hospitalName");
+
+
+    if (
+        data.hospital &&
+        data.hospital.name
+    ) {
+
+        hospitalName.textContent =
+            data.hospital.name;
+
+    }
+
+}
+
+
+/* ============================================
+   PATIENT ARRIVAL
+   ============================================ */
+
+function updatePatientArrival(data) {
+
+    const normal =
+        data.patientFlow?.normalPerHour || 0;
+
+    const current =
+        data.patientFlow?.currentPerHour || 0;
+
+
+    document.getElementById(
+        "normalArrival"
+    ).textContent =
+        `${normal} /hour`;
+
+
+    document.getElementById(
+        "currentArrival"
+    ).textContent =
+        `${current} /hour`;
+
+
+    /*
+        Surge calculation
+
+        Example:
+
+        Normal = 12
+        Current = 28
+
+        Increase =
+        (28 - 12) / 12 × 100
+
+        = 133%
+
+    */
+
+    const increase =
+        normal > 0
+            ? ((current - normal) / normal) * 100
+            : 0;
+
+
+    const surgeBox =
+        document.getElementById("surgeBox");
+
+    const title =
+        document.getElementById("surgeTitle");
+
+    const message =
+        document.getElementById("surgeMessage");
+
+
+    if (increase >= 50) {
+
+        surgeBox.style.background =
+            "#fff1f1";
+
+        surgeBox.style.borderColor =
+            "#ffc7c7";
+
+        title.textContent =
+            "⚠ DEMAND SURGE DETECTED";
+
+        title.style.color =
+            "#d64040";
+
+        message.textContent =
+            `Patient arrivals are ${Math.round(increase)}% above normal.`;
+
+    }
+
+    else if (increase >= 20) {
+
+        surgeBox.style.background =
+            "#fff7e8";
+
+        surgeBox.style.borderColor =
+            "#ffdca4";
+
+        title.textContent =
+            "⚠ ELEVATED DEMAND";
+
+        title.style.color =
+            "#c27b09";
+
+        message.textContent =
+            `Patient arrivals are ${Math.round(increase)}% above normal.`;
+
+    }
+
+    else {
+
+        surgeBox.style.background =
+            "#eaf8f0";
+
+        surgeBox.style.borderColor =
+            "#c8ecd8";
+
+        title.textContent =
+            "✓ DEMAND NORMAL";
+
+        title.style.color =
+            "#1b9a60";
+
+        message.textContent =
+            "Patient arrival rate is within the normal range.";
+
+    }
+
+}
+
+
+/* ============================================
+   RESOURCE PRESSURE
+   ============================================ */
+
+function updateResourcePressure(data) {
+
+
+    /* -----------------------------------------
+       EMERGENCY BEDS
+       ----------------------------------------- */
+
+    const beds =
+        data.beds?.emergency;
+
+
+    if (beds) {
+
+        const pressure =
+            calculatePressure(
+                beds.total,
+                beds.available
+            );
+
+
+        updateResource(
+            "bedPressure",
+            "bedProgress",
+            "bedStatus",
+            "bedDetails",
+            pressure,
+            beds.available,
+            beds.total
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       DOCTORS
+       ----------------------------------------- */
+
+    const doctors =
+        data.doctors || [];
+
+
+    if (doctors.length > 0) {
+
+        const availableDoctors =
+            doctors.filter(
+                doctor =>
+                    doctor.status?.toLowerCase() ===
+                    "available"
+            ).length;
+
+
+        const pressure =
+            calculatePressure(
+                doctors.length,
+                availableDoctors
+            );
+
+
+        updateResource(
+            "doctorPressure",
+            "doctorProgress",
+            "doctorStatus",
+            "doctorDetails",
+            pressure,
+            availableDoctors,
+            doctors.length
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       NURSES
+       ----------------------------------------- */
+
+    const nurses =
+        data.nurses;
+
+
+    if (nurses) {
+
+        const pressure =
+            calculatePressure(
+                nurses.total,
+                nurses.available
+            );
+
+
+        updateResource(
+            "nursePressure",
+            "nurseProgress",
+            "nurseStatus",
+            "nurseDetails",
+            pressure,
+            nurses.available,
+            nurses.total
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       EQUIPMENT
+       ----------------------------------------- */
+
+    const equipment =
+        data.equipment;
+
+
+    if (equipment) {
+
+        const pressure =
+            calculatePressure(
+                equipment.total,
+                equipment.available
+            );
+
+
+        updateResource(
+            "equipmentPressure",
+            "equipmentProgress",
+            "equipmentStatus",
+            "equipmentDetails",
+            pressure,
+            equipment.available,
+            equipment.total
+        );
+
+    }
+
+}
+
+
+/* ============================================
+   PRESSURE CALCULATION
+   ============================================ */
+
+function calculatePressure(
+    total,
+    available
+) {
+
+    if (!total || total <= 0) {
+        return 0;
+    }
+
+
+    /*
+        Pressure represents resource utilization.
+
+        Example:
+
+        20 beds
+        2 available
+
+        Occupied = 18
+
+        Pressure =
+        18 / 20 × 100
+
+        = 90%
+    */
+
+    const occupied =
+        total - available;
+
+
+    return Math.round(
+        (occupied / total) * 100
+    );
+
+}
+
+
+/* ============================================
+   UPDATE RESOURCE CARD
+   ============================================ */
+
+function updateResource(
+    percentageId,
+    progressId,
+    statusId,
+    detailsId,
+    pressure,
+    available,
+    total
+) {
+
+    const percentage =
+        document.getElementById(
+            percentageId
+        );
+
+    const progress =
+        document.getElementById(
+            progressId
+        );
+
+    const status =
+        document.getElementById(
+            statusId
+        );
+
+    const details =
+        document.getElementById(
+            detailsId
+        );
+
+
+    percentage.textContent =
+        `${pressure}%`;
+
+
+    progress.style.width =
+        `${pressure}%`;
+
+
+    details.textContent =
+        `${available} available / ${total}`;
+
+
+    /* -----------------------------------------
+       PRESSURE LEVEL
+       ----------------------------------------- */
+
+    progress.classList.remove(
+        "pressure-normal",
+        "pressure-warning",
+        "pressure-critical"
+    );
+
+
+    if (pressure >= 85) {
+
+        progress.classList.add(
+            "pressure-critical"
+        );
+
+        status.textContent =
+            "Critical Pressure";
+
+        status.style.color =
+            "#d64040";
+
+    }
+
+    else if (pressure >= 70) {
+
+        progress.classList.add(
+            "pressure-warning"
+        );
+
+        status.textContent =
+            "High Pressure";
+
+        status.style.color =
+            "#c27b09";
+
+    }
+
+    else {
+
+        progress.classList.add(
+            "pressure-normal"
+        );
+
+        status.textContent =
+            "Normal Pressure";
+
+        status.style.color =
+            "#1b9a60";
+
+    }
+
+}
+
+
+/* ============================================
+   DOCTOR INFORMATION
+   ============================================ */
+
+function updateDoctorInformation(data) {
+
+    const doctors =
+        data.doctors || [];
+
+
+    /* -----------------------------------------
+       COUNTS
+       ----------------------------------------- */
+
+    const total =
+        doctors.length;
+
+
+    const available =
+        doctors.filter(
+            doctor =>
+                doctor.status?.toLowerCase() ===
+                "available"
+        ).length;
+
+
+    const consultation =
+        doctors.filter(
+            doctor =>
+                doctor.status?.toLowerCase() ===
+                "in consultation"
+        ).length;
+
+
+    const emergency =
+        doctors.filter(
+            doctor =>
+                doctor.status?.toLowerCase() ===
+                "emergency duty"
+        ).length;
+
+
+    const surgery =
+        doctors.filter(
+            doctor =>
+                doctor.status?.toLowerCase() ===
+                "in surgery"
+        ).length;
+
+
+    document.getElementById(
+        "totalDoctors"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "availableDoctors"
+    ).textContent = available;
+
+
+    document.getElementById(
+        "consultationDoctors"
+    ).textContent = consultation;
+
+
+    document.getElementById(
+        "emergencyDoctors"
+    ).textContent = emergency;
+
+
+    document.getElementById(
+        "surgeryDoctors"
+    ).textContent = surgery;
+
+
+    /* -----------------------------------------
+       DOCTOR TABLE
+       ----------------------------------------- */
+
+    const table =
+        document.getElementById(
+            "doctorTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    doctors.forEach(
+        doctor => {
+
+            const row =
+                document.createElement("tr");
+
+
+            const statusClass =
+                getStatusClass(
+                    doctor.status
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${escapeHTML(
+                            doctor.name
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        doctor.specialization ||
+                        "Not specified"
+                    )}
+                </td>
+
+                <td>
+
+                    <span class="status ${statusClass}">
+                        ${escapeHTML(
+                            doctor.status ||
+                            "Unknown"
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        doctor.assignment ||
+                        "No current assignment"
+                    )}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+
+    if (doctors.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+
+                    No doctor information
+                    available for this hospital.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================
+   DOCTOR STATUS CLASS
+   ============================================ */
+
+function getStatusClass(status) {
+
+    if (!status) {
+        return "";
+    }
+
+
+    const value =
+        status.toLowerCase();
+
+
+    if (value === "available") {
+        return "available";
+    }
+
+
+    if (value === "in consultation") {
+        return "consultation";
+    }
+
+
+    if (value === "in surgery") {
+        return "surgery";
+    }
+
+
+    if (value === "emergency duty") {
+        return "emergency";
+    }
+
+
+    if (value === "off duty") {
+        return "off-duty";
+    }
+
+
+    return "";
+
+}
+
+
+/* ============================================
+   RESOURCE INTELLIGENCE
+   ============================================ */
+
+function generateIntelligence(data) {
+
+    const message =
+        document.getElementById(
+            "intelligenceMessage"
+        );
+
+
+    const pressures = [];
+
+
+    const beds =
+        data.beds?.emergency;
+
+
+    if (beds) {
+
+        pressures.push(
+            calculatePressure(
+                beds.total,
+                beds.available
+            )
+        );
+
+    }
+
+
+    const doctors =
+        data.doctors || [];
+
+
+    if (doctors.length > 0) {
+
+        const available =
+            doctors.filter(
+                doctor =>
+                    doctor.status?.toLowerCase() ===
+                    "available"
+            ).length;
+
+
+        pressures.push(
+            calculatePressure(
+                doctors.length,
+                available
+            )
+        );
+
+    }
+
+
+    const nurses =
+        data.nurses;
+
+
+    if (nurses) {
+
+        pressures.push(
+            calculatePressure(
+                nurses.total,
+                nurses.available
+            )
+        );
+
+    }
+
+
+    const equipment =
+        data.equipment;
+
+
+    if (equipment) {
+
+        pressures.push(
+            calculatePressure(
+                equipment.total,
+                equipment.available
+            )
+        );
+
+    }
+
+
+    if (pressures.length === 0) {
+
+        message.textContent =
+            "Insufficient resource data for intelligence analysis.";
+
+        return;
+
+    }
+
+
+    const highestPressure =
+        Math.max(...pressures);
+
+
+    if (highestPressure >= 85) {
+
+        message.textContent =
+            "Critical resource pressure detected. Hospital resources should be monitored closely and additional capacity may be required.";
+
+    }
+
+    else if (highestPressure >= 70) {
+
+        message.textContent =
+            "Several hospital resources are under high pressure. Continue monitoring availability as patient demand changes.";
+
+    }
+
+    else {
+
+        message.textContent =
+            "Current resource utilization is within manageable levels.";
+
+    }
+
+}
+
+
+/* ============================================
+   HTML SECURITY
+   ============================================ */
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value;
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================
+   LOGOUT
+   ============================================ */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        async function () {
+
+            try {
+
+                await fetch(
+                    "/api/auth/logout",
+                    {
+                        method: "POST",
+                        credentials: "include"
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+/* ============================================
+   INITIAL LOAD
+   ============================================ */
+
+loadDemandData();
+
+
+/*
+    Refresh data every 30 seconds.
+
+    This means:
+
+    Hospital backend
+          ↓
+    Updated database
+          ↓
+    Demand page
+          ↓
+    New resource pressure
+*/
+
+setInterval(
+    loadDemandData,
+    30000
+);
+
+
+/* ============================================
+   DEMO FALLBACK
+   ============================================ */
+
+function showDemoMessage() {
+
+    document.getElementById(
+        "hospitalName"
+    ).textContent =
+        "Hospital Data Unavailable";
+
+
+    document.getElementById(
+        "intelligenceMessage"
+    ).textContent =
+        "Unable to connect to the hospital backend. Please check the server connection.";
+
+}
+    </script>
+</body>
+</html>

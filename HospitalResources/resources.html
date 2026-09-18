@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Resources</title>
+
+    <link rel="stylesheet" href="resources.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">+</div>
+            <div>
+                <h2>HOSPITAL</h2>
+                <span>COMMAND CENTER</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="resources.html" class="active">Resources</a>
+            <a href="patients.html">Patients</a>
+            <a href="staff.html">Staff</a>
+            <a href="equipment.html">Equipment</a>
+            <a href="transfers.html">Hospital Collaboration</a>
+            <a href="alerts.html">Alerts</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="settings.html">Settings</a>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">Hospital Command Center / Resources</p>
+                <h1>Resource Management</h1>
+                <p class="subtitle">
+                    Monitor and manage the availability of hospital resources.
+                </p>
+            </div>
+
+            <div class="hospital-info">
+                <div class="status-dot"></div>
+
+                <div>
+                    <strong id="hospitalName">Loading...</strong>
+                    <span id="hospitalLocation">Loading...</span>
+                </div>
+
+                <div class="profile-circle" id="profileInitial">
+                    H
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Resource Navigation -->
+        <section class="resource-navigation">
+
+            <button class="resource-tab active" data-section="beds">
+                <span class="tab-icon">🛏</span>
+                <span>Beds</span>
+            </button>
+
+            <button class="resource-tab" data-section="doctors">
+                <span class="tab-icon">👨‍⚕️</span>
+                <span>Doctors</span>
+            </button>
+
+            <button class="resource-tab" data-section="nurses">
+                <span class="tab-icon">👩‍⚕️</span>
+                <span>Nurses</span>
+            </button>
+
+            <button class="resource-tab" data-section="equipment">
+                <span class="tab-icon">⚕</span>
+                <span>Equipment</span>
+            </button>
+
+            <button class="resource-tab" data-section="emergency">
+                <span class="tab-icon">🚑</span>
+                <span>Emergency Resources</span>
+            </button>
+
+        </section>
+
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            Loading hospital resources...
+        </div>
+
+
+        <!-- Error -->
+        <div id="errorMessage" class="error-message hidden">
+            Unable to load hospital resources.
+        </div>
+
+
+        <!-- ================= BEDS ================= -->
+
+        <section id="beds" class="resource-section">
+
+            <div class="section-header">
+                <div>
+                    <h2>Bed Capacity</h2>
+                    <p>Current availability of hospital beds</p>
+                </div>
+
+                <span class="last-updated" id="bedsUpdated">
+                    Last updated: --
+                </span>
+            </div>
+
+
+            <div class="resource-grid">
+
+                <div class="resource-card total">
+                    <span class="card-label">Total Beds</span>
+                    <strong id="totalBeds">--</strong>
+                </div>
+
+                <div class="resource-card available">
+                    <span class="card-label">Available</span>
+                    <strong id="availableBeds">--</strong>
+                </div>
+
+                <div class="resource-card occupied">
+                    <span class="card-label">Occupied</span>
+                    <strong id="occupiedBeds">--</strong>
+                </div>
+
+                <div class="resource-card critical">
+                    <span class="card-label">Reserved</span>
+                    <strong id="reservedBeds">--</strong>
+                </div>
+
+            </div>
+
+
+            <!-- Bed Types -->
+
+            <div class="content-card">
+
+                <div class="card-header">
+                    <h3>Bed Availability by Type</h3>
+                </div>
+
+                <div class="bed-list">
+
+                    <div class="bed-row">
+                        <div>
+                            <strong>General Ward</strong>
+                            <span id="generalBedText">--</span>
+                        </div>
+
+                        <div class="progress">
+                            <div id="generalBedProgress"></div>
+                        </div>
+
+                        <strong id="generalBedCount">--</strong>
+                    </div>
+
+
+                    <div class="bed-row">
+                        <div>
+                            <strong>ICU</strong>
+                            <span id="icuBedText">--</span>
+                        </div>
+
+                        <div class="progress">
+                            <div id="icuBedProgress"></div>
+                        </div>
+
+                        <strong id="icuBedCount">--</strong>
+                    </div>
+
+
+                    <div class="bed-row">
+                        <div>
+                            <strong>Emergency</strong>
+                            <span id="emergencyBedText">--</span>
+                        </div>
+
+                        <div class="progress">
+                            <div id="emergencyBedProgress"></div>
+                        </div>
+
+                        <strong id="emergencyBedCount">--</strong>
+                    </div>
+
+
+                    <div class="bed-row">
+                        <div>
+                            <strong>Isolation</strong>
+                            <span id="isolationBedText">--</span>
+                        </div>
+
+                        <div class="progress">
+                            <div id="isolationBedProgress"></div>
+                        </div>
+
+                        <strong id="isolationBedCount">--</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DOCTORS ================= -->
+
+        <section id="doctors" class="resource-section hidden">
+
+            <div class="section-header">
+                <div>
+                    <h2>Doctors</h2>
+                    <p>Current doctor availability and workload</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card total">
+                    <span class="card-label">Total Doctors</span>
+                    <strong id="totalDoctors">--</strong>
+                </div>
+
+                <div class="resource-card available">
+                    <span class="card-label">Available</span>
+                    <strong id="availableDoctors">--</strong>
+                </div>
+
+                <div class="resource-card occupied">
+                    <span class="card-label">On Duty</span>
+                    <strong id="onDutyDoctors">--</strong>
+                </div>
+
+                <div class="resource-card critical">
+                    <span class="card-label">On Leave</span>
+                    <strong id="leaveDoctors">--</strong>
+                </div>
+
+            </div>
+
+
+            <div class="content-card">
+
+                <div class="card-header">
+                    <h3>Department Availability</h3>
+                </div>
+
+                <div id="doctorDepartments" class="department-list">
+                    <!-- Backend data inserted here -->
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= NURSES ================= -->
+
+        <section id="nurses" class="resource-section hidden">
+
+            <div class="section-header">
+                <div>
+                    <h2>Nurses</h2>
+                    <p>Monitor nursing staff availability</p>
+                </div>
+            </div>
+
+            <div class="resource-grid">
+
+                <div class="resource-card total">
+                    <span class="card-label">Total Nurses</span>
+                    <strong id="totalNurses">--</strong>
+                </div>
+
+                <div class="resource-card available">
+                    <span class="card-label">Available</span>
+                    <strong id="availableNurses">--</strong>
+                </div>
+
+                <div class="resource-card occupied">
+                    <span class="card-label">On Duty</span>
+                    <strong id="onDutyNurses">--</strong>
+                </div>
+
+                <div class="resource-card critical">
+                    <span class="card-label">On Leave</span>
+                    <strong id="leaveNurses">--</strong>
+                </div>
+
+            </div>
+
+
+            <div class="content-card">
+
+                <div class="card-header">
+                    <h3>Nursing Department Status</h3>
+                </div>
+
+                <div id="nurseDepartments" class="department-list">
+                    <!-- Backend data inserted here -->
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= EQUIPMENT ================= -->
+
+        <section id="equipment" class="resource-section hidden">
+
+            <div class="section-header">
+                <div>
+                    <h2>Medical Equipment</h2>
+                    <p>Monitor critical medical equipment</p>
+                </div>
+            </div>
+
+
+            <div class="equipment-grid" id="equipmentGrid">
+                <!-- Backend equipment data -->
+            </div>
+
+        </section>
+
+
+        <!-- ================= EMERGENCY ================= -->
+
+        <section id="emergency" class="resource-section hidden">
+
+            <div class="section-header">
+                <div>
+                    <h2>Emergency Resources</h2>
+                    <p>Current emergency resource availability</p>
+                </div>
+            </div>
+
+
+            <div class="resource-grid">
+
+                <div class="resource-card total">
+                    <span class="card-label">Ambulances</span>
+                    <strong id="ambulances">--</strong>
+                </div>
+
+                <div class="resource-card available">
+                    <span class="card-label">Emergency Rooms</span>
+                    <strong id="emergencyRooms">--</strong>
+                </div>
+
+                <div class="resource-card occupied">
+                    <span class="card-label">Ventilators</span>
+                    <strong id="ventilators">--</strong>
+                </div>
+
+                <div class="resource-card critical">
+                    <span class="card-label">Blood Units</span>
+                    <strong id="bloodUnits">--</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="resources.js"></script>
+
+</body>
+<head>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+
+    background: #0b1f3a;
+    color: white;
+
+    padding: 25px 18px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 0 10px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+
+    background: #ffffff;
+    color: #1769aa;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.logo h2 {
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    font-size: 9px;
+    opacity: 0.7;
+}
+
+
+.sidebar nav {
+    margin-top: 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar nav a,
+.sidebar-bottom a,
+.sidebar-bottom button {
+
+    text-decoration: none;
+    color: #cbd5e1;
+
+    padding: 13px 14px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    text-align: left;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+
+    background: #173a63;
+    color: white;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-bottom button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* ================= MAIN ================= */
+
+.main-content {
+    margin-left: 250px;
+    padding: 30px 40px;
+}
+
+
+/* ================= TOPBAR ================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+.breadcrumb {
+    color: #7b8794;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.topbar h1 {
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    margin-top: 6px;
+    color: #7b8794;
+    font-size: 14px;
+}
+
+.hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hospital-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.hospital-info span {
+    display: block;
+    color: #7b8794;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.profile-circle {
+    width: 42px;
+    height: 42px;
+
+    background: #1769aa;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+
+/* ================= RESOURCE NAVIGATION ================= */
+
+.resource-navigation {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 30px;
+}
+
+.resource-tab {
+
+    border: 1px solid #dce3eb;
+
+    background: white;
+
+    padding: 18px 10px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+
+    color: #52606d;
+}
+
+.resource-tab:hover {
+    border-color: #1769aa;
+}
+
+.resource-tab.active {
+    background: #1769aa;
+    color: white;
+    border-color: #1769aa;
+}
+
+.tab-icon {
+    font-size: 18px;
+}
+
+
+/* ================= SECTIONS ================= */
+
+.resource-section {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.section-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 21px;
+}
+
+.section-header p {
+    color: #7b8794;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.last-updated {
+    font-size: 12px;
+    color: #7b8794;
+}
+
+
+/* ================= RESOURCE CARDS ================= */
+
+.resource-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.resource-card {
+
+    background: white;
+
+    padding: 22px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e2e8f0;
+
+    position: relative;
+}
+
+.resource-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    border-radius: 12px 0 0 12px;
+}
+
+.resource-card.total::before {
+    background: #64748b;
+}
+
+.resource-card.available::before {
+    background: #22c55e;
+}
+
+.resource-card.occupied::before {
+    background: #f59e0b;
+}
+
+.resource-card.critical::before {
+    background: #ef4444;
+}
+
+.card-label {
+
+    display: block;
+
+    font-size: 13px;
+
+    color: #64748b;
+
+    margin-bottom: 10px;
+}
+
+.resource-card strong {
+    font-size: 30px;
+}
+
+
+/* ================= CONTENT CARD ================= */
+
+.content-card {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    margin-bottom: 25px;
+}
+
+.card-header {
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #edf1f5;
+
+    margin-bottom: 10px;
+}
+
+.card-header h3 {
+    font-size: 16px;
+}
+
+
+/* ================= BED LIST ================= */
+
+.bed-row {
+
+    display: grid;
+
+    grid-template-columns: 200px 1fr 50px;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #edf1f5;
+}
+
+.bed-row:last-child {
+    border-bottom: none;
+}
+
+.bed-row strong {
+    font-size: 14px;
+}
+
+.bed-row span {
+    display: block;
+
+    font-size: 12px;
+
+    color: #7b8794;
+
+    margin-top: 4px;
+}
+
+.progress {
+
+    height: 8px;
+
+    background: #e8edf3;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress div {
+
+    height: 100%;
+
+    width: 0%;
+
+    background: #1769aa;
+
+    border-radius: 10px;
+
+    transition: width 0.5s ease;
+}
+
+
+/* ================= DEPARTMENTS ================= */
+
+.department-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.department-row {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 5px;
+
+    border-bottom: 1px solid #edf1f5;
+}
+
+.department-row:last-child {
+    border-bottom: none;
+}
+
+.department-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.department-status {
+    font-size: 12px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+}
+
+.status-available {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-busy {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+
+/* ================= EQUIPMENT ================= */
+
+.equipment-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.equipment-card {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 20px;
+}
+
+.equipment-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.equipment-name {
+    font-weight: bold;
+}
+
+.equipment-count {
+
+    font-size: 27px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+.equipment-detail {
+
+    color: #7b8794;
+
+    font-size: 12px;
+}
+
+
+/* ================= LOADING ================= */
+
+.loading {
+
+    background: white;
+
+    padding: 30px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    color: #64748b;
+}
+
+.error-message {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px) {
+
+    .resource-navigation {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .resource-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .equipment-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .resource-navigation {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .resource-grid,
+    .equipment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bed-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+    </style>
+</head>
+<head>
+    <script>
+        /* =====================================================
+   HOSPITAL RESOURCE MANAGEMENT
+   ===================================================== */
+
+
+/*
+    Change this URL according to your backend.
+
+    Example:
+    http://localhost:5000/api/hospital/resources
+
+    If frontend and backend are deployed together,
+    you can use:
+    /api/hospital/resources
+*/
+
+const API_URL = "/api/hospital/resources";
+
+
+/* =====================================================
+   DOM ELEMENTS
+   ===================================================== */
+
+const loading = document.getElementById("loading");
+const errorMessage = document.getElementById("errorMessage");
+
+
+/* =====================================================
+   RESOURCE TAB SWITCHING
+   ===================================================== */
+
+const tabs = document.querySelectorAll(".resource-tab");
+const sections = document.querySelectorAll(".resource-section");
+
+tabs.forEach(tab => {
+
+    tab.addEventListener("click", () => {
+
+        const targetSection = tab.dataset.section;
+
+
+        // Remove active state
+        tabs.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        // Add active state
+        tab.classList.add("active");
+
+
+        // Show selected section
+        sections.forEach(section => {
+
+            if (section.id === targetSection) {
+                section.classList.remove("hidden");
+            } else {
+                section.classList.add("hidden");
+            }
+
+        });
+
+    });
+
+});
+
+
+/* =====================================================
+   FETCH RESOURCE DATA FROM BACKEND
+   ===================================================== */
+
+async function loadResources() {
+
+    try {
+
+        loading.classList.remove("hidden");
+        errorMessage.classList.add("hidden");
+
+
+        /*
+            credentials: "include"
+
+            This allows cookies/session information
+            from your hospital login to be sent to backend.
+        */
+
+        const response = await fetch(API_URL, {
+            method: "GET",
+            credentials: "include",
+
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+
+        }
+
+
+        const data = await response.json();
+
+
+        console.log("Hospital resource data:", data);
+
+
+        updateHospitalInformation(data);
+
+        updateBeds(data.beds);
+
+        updateDoctors(data.doctors);
+
+        updateNurses(data.nurses);
+
+        updateEquipment(data.equipment);
+
+        updateEmergencyResources(data.emergencyResources);
+
+
+    } catch (error) {
+
+        console.error("Resource loading error:", error);
+
+        showError();
+
+    } finally {
+
+        loading.classList.add("hidden");
+
+    }
+
+}
+
+
+/* =====================================================
+   HOSPITAL INFORMATION
+   ===================================================== */
+
+function updateHospitalInformation(data) {
+
+    if (!data.hospital) {
+        return;
+    }
+
+
+    const hospitalName =
+        data.hospital.name || "Hospital";
+
+
+    const hospitalLocation =
+        data.hospital.location || "Location unavailable";
+
+
+    document.getElementById("hospitalName")
+        .textContent = hospitalName;
+
+
+    document.getElementById("hospitalLocation")
+        .textContent = hospitalLocation;
+
+
+    /*
+        Get first letter of hospital name
+        for profile circle.
+    */
+
+    document.getElementById("profileInitial")
+        .textContent =
+        hospitalName.charAt(0).toUpperCase();
+
+}
+
+
+/* =====================================================
+   BED DATA
+   ===================================================== */
+
+function updateBeds(beds) {
+
+    if (!beds) {
+        return;
+    }
+
+
+    document.getElementById("totalBeds")
+        .textContent = beds.total ?? "--";
+
+
+    document.getElementById("availableBeds")
+        .textContent = beds.available ?? "--";
+
+
+    document.getElementById("occupiedBeds")
+        .textContent = beds.occupied ?? "--";
+
+
+    document.getElementById("reservedBeds")
+        .textContent = beds.reserved ?? "--";
+
+
+    /*
+        Calculate occupancy percentages
+    */
+
+    updateBedType(
+        "general",
+        beds.general
+    );
+
+    updateBedType(
+        "icu",
+        beds.icu
+    );
+
+    updateBedType(
+        "emergency",
+        beds.emergency
+    );
+
+    updateBedType(
+        "isolation",
+        beds.isolation
+    );
+
+
+    if (beds.updatedAt) {
+
+        document.getElementById("bedsUpdated")
+            .textContent =
+            "Last updated: " +
+            formatDate(beds.updatedAt);
+
+    }
+
+}
+
+
+/* =====================================================
+   INDIVIDUAL BED TYPE
+   ===================================================== */
+
+function updateBedType(type, bedData) {
+
+    if (!bedData) {
+        return;
+    }
+
+
+    const available = bedData.available ?? 0;
+
+    const total = bedData.total ?? 0;
+
+    const occupied = total - available;
+
+
+    const percentage =
+        total > 0
+            ? (occupied / total) * 100
+            : 0;
+
+
+    const textElement =
+        document.getElementById(
+            `${type}BedText`
+        );
+
+
+    const countElement =
+        document.getElementById(
+            `${type}BedCount`
+        );
+
+
+    const progressElement =
+        document.getElementById(
+            `${type}BedProgress`
+        );
+
+
+    if (textElement) {
+
+        textElement.textContent =
+            `${available} available / ${total} total`;
+
+    }
+
+
+    if (countElement) {
+
+        countElement.textContent =
+            available;
+
+    }
+
+
+    if (progressElement) {
+
+        progressElement.style.width =
+            `${Math.min(percentage, 100)}%`;
+
+    }
+
+}
+
+
+/* =====================================================
+   DOCTOR DATA
+   ===================================================== */
+
+function updateDoctors(doctors) {
+
+    if (!doctors) {
+        return;
+    }
+
+
+    document.getElementById("totalDoctors")
+        .textContent = doctors.total ?? "--";
+
+
+    document.getElementById("availableDoctors")
+        .textContent = doctors.available ?? "--";
+
+
+    document.getElementById("onDutyDoctors")
+        .textContent = doctors.onDuty ?? "--";
+
+
+    document.getElementById("leaveDoctors")
+        .textContent = doctors.onLeave ?? "--";
+
+
+    createDepartmentList(
+        "doctorDepartments",
+        doctors.departments
+    );
+
+}
+
+
+/* =====================================================
+   NURSE DATA
+   ===================================================== */
+
+function updateNurses(nurses) {
+
+    if (!nurses) {
+        return;
+    }
+
+
+    document.getElementById("totalNurses")
+        .textContent = nurses.total ?? "--";
+
+
+    document.getElementById("availableNurses")
+        .textContent = nurses.available ?? "--";
+
+
+    document.getElementById("onDutyNurses")
+        .textContent = nurses.onDuty ?? "--";
+
+
+    document.getElementById("leaveNurses")
+        .textContent = nurses.onLeave ?? "--";
+
+
+    createDepartmentList(
+        "nurseDepartments",
+        nurses.departments
+    );
+
+}
+
+
+/* =====================================================
+   DEPARTMENT LIST
+   ===================================================== */
+
+function createDepartmentList(elementId, departments) {
+
+    const container =
+        document.getElementById(elementId);
+
+
+    container.innerHTML = "";
+
+
+    if (!departments || departments.length === 0) {
+
+        container.innerHTML =
+            `<p style="color:#7b8794;">
+                No department data available.
+            </p>`;
+
+        return;
+
+    }
+
+
+    departments.forEach(department => {
+
+        const row =
+            document.createElement("div");
+
+
+        row.className =
+            "department-row";
+
+
+        const name =
+            document.createElement("span");
+
+
+        name.className =
+            "department-name";
+
+
+        name.textContent =
+            department.name;
+
+
+        const status =
+            document.createElement("span");
+
+
+        status.className =
+            "department-status";
+
+
+        const departmentStatus =
+            department.status || "Unknown";
+
+
+        status.textContent =
+            departmentStatus;
+
+
+        /*
+            Status styling
+        */
+
+        if (
+            departmentStatus.toLowerCase()
+                .includes("available")
+        ) {
+
+            status.classList.add(
+                "status-available"
+            );
+
+        } else if (
+            departmentStatus.toLowerCase()
+                .includes("busy")
+        ) {
+
+            status.classList.add(
+                "status-busy"
+            );
+
+        } else {
+
+            status.classList.add(
+                "status-critical"
+            );
+
+        }
+
+
+        row.appendChild(name);
+
+        row.appendChild(status);
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+/* =====================================================
+   EQUIPMENT
+   ===================================================== */
+
+function updateEquipment(equipment) {
+
+    const container =
+        document.getElementById("equipmentGrid");
+
+
+    container.innerHTML = "";
+
+
+    if (!equipment || equipment.length === 0) {
+
+        container.innerHTML =
+            `<div class="content-card">
+                No equipment data available.
+            </div>`;
+
+        return;
+
+    }
+
+
+    equipment.forEach(item => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "equipment-card";
+
+
+        const statusClass =
+            getEquipmentStatusClass(
+                item.status
+            );
+
+
+        card.innerHTML = `
+
+            <div class="equipment-top">
+
+                <span class="equipment-name">
+                    ${escapeHTML(item.name)}
+                </span>
+
+                <span class="
+                    department-status
+                    ${statusClass}
+                ">
+                    ${escapeHTML(item.status || "Unknown")}
+                </span>
+
+            </div>
+
+
+            <div class="equipment-count">
+                ${item.available ?? 0}
+            </div>
+
+
+            <div class="equipment-detail">
+                Available out of ${item.total ?? 0} units
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* =====================================================
+   EQUIPMENT STATUS
+   ===================================================== */
+
+function getEquipmentStatusClass(status) {
+
+    if (!status) {
+        return "status-critical";
+    }
+
+
+    const value =
+        status.toLowerCase();
+
+
+    if (
+        value.includes("available") ||
+        value.includes("operational")
+    ) {
+
+        return "status-available";
+
+    }
+
+
+    if (
+        value.includes("maintenance") ||
+        value.includes("limited")
+    ) {
+
+        return "status-busy";
+
+    }
+
+
+    return "status-critical";
+
+}
+
+
+/* =====================================================
+   EMERGENCY RESOURCES
+   ===================================================== */
+
+function updateEmergencyResources(resources) {
+
+    if (!resources) {
+        return;
+    }
+
+
+    document.getElementById("ambulances")
+        .textContent =
+        resources.ambulances?.available ?? "--";
+
+
+    document.getElementById("emergencyRooms")
+        .textContent =
+        resources.emergencyRooms?.available ?? "--";
+
+
+    document.getElementById("ventilators")
+        .textContent =
+        resources.ventilators?.available ?? "--";
+
+
+    document.getElementById("bloodUnits")
+        .textContent =
+        resources.bloodUnits?.available ?? "--";
+
+}
+
+
+/* =====================================================
+   ERROR HANDLING
+   ===================================================== */
+
+function showError() {
+
+    errorMessage.textContent =
+        "Unable to load hospital resources. " +
+        "Check your connection or backend server.";
+
+    errorMessage.classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   DATE FORMAT
+   ===================================================== */
+
+function formatDate(date) {
+
+    try {
+
+        return new Date(date).toLocaleString();
+
+    } catch {
+
+        return date;
+
+    }
+
+}
+
+
+/* =====================================================
+   BASIC HTML ESCAPING
+   ===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+        try {
+
+            await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+        }
+
+
+        window.location.href =
+            "login.html";
+
+    });
+
+
+/* =====================================================
+   INITIAL LOAD
+   ===================================================== */
+
+loadResources();
+    </script>
+</head>
+</html>

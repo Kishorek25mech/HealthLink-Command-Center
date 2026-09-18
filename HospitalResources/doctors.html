@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doctors | Hospital Command Center</title>
+
+    <link rel="stylesheet" href="doctors.css">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">+</div>
+
+            <div class="logo-text">
+                <h2>HOSPITAL</h2>
+                <span>COMMAND CENTER</span>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a href="dashboard.html">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="resources.html">
+                <span>▤</span>
+                Resources
+            </a>
+
+            <a href="doctors.html" class="active">
+                <span>♟</span>
+                Doctors
+            </a>
+
+            <a href="nurses.html">
+                <span>♙</span>
+                Nurses
+            </a>
+
+            <a href="patients.html">
+                <span>▦</span>
+                Patients
+            </a>
+
+            <a href="equipment.html">
+                <span>⚕</span>
+                Equipment
+            </a>
+
+            <a href="transfers.html">
+                <span>⇄</span>
+                Hospital Collaboration
+            </a>
+
+            <a href="alerts.html">
+                <span>⚠</span>
+                Alerts
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="settings.html">
+                <span>⚙</span>
+                Settings
+            </a>
+
+            <button id="logoutBtn">
+                <span>↪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="breadcrumb">
+                    Hospital Command Center / Doctors
+                </p>
+
+                <h1>Doctors</h1>
+
+                <p class="subtitle">
+                    Monitor doctor availability, assignments and current workload.
+                </p>
+
+            </div>
+
+
+            <div class="hospital-profile">
+
+                <div class="online-indicator"></div>
+
+                <div class="hospital-details">
+
+                    <strong id="hospitalName">
+                        Loading...
+                    </strong>
+
+                    <span id="hospitalLocation">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div class="profile-circle" id="profileInitial">
+                    H
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= LOADING ================= -->
+
+        <div id="loading" class="loading-box">
+
+            <div class="loader"></div>
+
+            <span>
+                Loading doctor information...
+            </span>
+
+        </div>
+
+
+
+        <!-- ================= ERROR ================= -->
+
+        <div id="errorMessage" class="error-box hidden">
+
+            Unable to load doctor information.
+
+        </div>
+
+
+
+        <!-- ================= DOCTOR SUMMARY ================= -->
+
+        <section class="doctor-summary">
+
+            <div class="summary-card">
+
+                <div class="summary-icon total-icon">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <span>Total</span>
+
+                    <strong id="totalDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card available-card">
+
+                <div class="summary-icon available-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>Available</span>
+
+                    <strong id="availableDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card consultation-card">
+
+                <div class="summary-icon consultation-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <span>In Consultation</span>
+
+                    <strong id="consultationDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card surgery-card">
+
+                <div class="summary-icon surgery-icon">
+                    ⚕
+                </div>
+
+                <div>
+
+                    <span>In Surgery</span>
+
+                    <strong id="surgeryDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card emergency-card">
+
+                <div class="summary-icon emergency-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <span>Emergency Duty</span>
+
+                    <strong id="emergencyDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card off-duty-card">
+
+                <div class="summary-icon off-duty-icon">
+                    –
+                </div>
+
+                <div>
+
+                    <span>Off Duty</span>
+
+                    <strong id="offDutyDoctors">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DOCTOR SECTION HEADER ================= -->
+
+        <div class="doctor-section-header">
+
+            <div>
+
+                <h2>Doctor Directory</h2>
+
+                <p>
+                    Current status and assignment of hospital doctors
+                </p>
+
+            </div>
+
+
+            <div class="doctor-actions">
+
+                <select id="departmentFilter">
+
+                    <option value="all">
+                        All Departments
+                    </option>
+
+                </select>
+
+
+                <select id="statusFilter">
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="Available">
+                        Available
+                    </option>
+
+                    <option value="In Consultation">
+                        In Consultation
+                    </option>
+
+                    <option value="In Surgery">
+                        In Surgery
+                    </option>
+
+                    <option value="Emergency Duty">
+                        Emergency Duty
+                    </option>
+
+                    <option value="Off Duty">
+                        Off Duty
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= DOCTOR CARDS ================= -->
+
+        <section
+            id="doctorGrid"
+            class="doctor-grid">
+
+            <!--
+                Doctor cards will be generated
+                dynamically from backend data.
+            -->
+
+        </section>
+
+
+
+        <!-- ================= NO RESULTS ================= -->
+
+        <div
+            id="noDoctors"
+            class="no-doctors hidden">
+
+            <div class="no-doctors-icon">
+                👨‍⚕️
+            </div>
+
+            <h3>No doctors found</h3>
+
+            <p>
+                No doctors match the selected filters.
+            </p>
+
+        </div>
+
+
+    </main>
+
+
+
+    <script src="doctors.js"></script>
+
+</body>
+<body>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #1f2937;
+}
+
+
+
+/* =====================================================
+   SIDEBAR
+   ===================================================== */
+
+.sidebar {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #0b1f3a;
+
+    color: white;
+
+    padding: 25px 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    z-index: 10;
+}
+
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 10px 28px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.1);
+}
+
+
+.logo-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: #1769aa;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    font-weight: bold;
+}
+
+
+.logo-text h2 {
+
+    font-size: 15px;
+
+    letter-spacing: 1px;
+}
+
+
+.logo-text span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 9px;
+
+    color: #94a3b8;
+
+    letter-spacing: 0.5px;
+}
+
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+.navigation {
+
+    margin-top: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.navigation a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+
+.navigation a span {
+
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 16px;
+}
+
+
+.navigation a:hover {
+
+    background: #173a63;
+
+    color: white;
+}
+
+
+.navigation a.active {
+
+    background: #1769aa;
+
+    color: white;
+}
+
+
+
+/* =====================================================
+   SIDEBAR BOTTOM
+   ===================================================== */
+
+.sidebar-bottom {
+
+    margin-top: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.sidebar-bottom a,
+.sidebar-bottom button {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    text-align: left;
+}
+
+
+.sidebar-bottom a:hover,
+.sidebar-bottom button:hover {
+
+    background: #173a63;
+
+    color: white;
+}
+
+
+
+/* =====================================================
+   MAIN CONTENT
+   ===================================================== */
+
+.main-content {
+
+    margin-left: 250px;
+
+    padding: 30px 40px;
+
+    min-height: 100vh;
+}
+
+
+
+/* =====================================================
+   TOP BAR
+   ===================================================== */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+
+.breadcrumb {
+
+    color: #7b8794;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+}
+
+
+.topbar h1 {
+
+    font-size: 30px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+.subtitle {
+
+    margin-top: 6px;
+
+    color: #7b8794;
+
+    font-size: 14px;
+}
+
+
+.hospital-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.online-indicator {
+
+    width: 9px;
+    height: 9px;
+
+    background: #22c55e;
+
+    border-radius: 50%;
+}
+
+
+.hospital-details strong {
+
+    display: block;
+
+    font-size: 14px;
+}
+
+
+.hospital-details span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7b8794;
+
+    font-size: 12px;
+}
+
+
+.profile-circle {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: #1769aa;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.loading-box {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 25px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    border: 1px solid #e2e8f0;
+
+    margin-bottom: 25px;
+
+    color: #64748b;
+}
+
+
+.loader {
+
+    width: 20px;
+    height: 20px;
+
+    border: 3px solid #dbeafe;
+
+    border-top-color: #1769aa;
+
+    border-radius: 50%;
+
+    animation:
+        spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.error-box {
+
+    padding: 15px 18px;
+
+    margin-bottom: 25px;
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    border-radius: 8px;
+
+    border: 1px solid #fecaca;
+}
+
+
+.hidden {
+
+    display: none !important;
+}
+
+
+
+/* =====================================================
+   DOCTOR SUMMARY
+   ===================================================== */
+
+.doctor-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 35px;
+}
+
+
+.summary-card {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 105px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.summary-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+}
+
+
+.summary-card > div:last-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.summary-card span {
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+.summary-card strong {
+
+    font-size: 27px;
+
+    color: #1f2937;
+}
+
+
+
+/* SUMMARY ICONS */
+
+.summary-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+
+.total-icon {
+
+    background: #e0e7ff;
+}
+
+
+.available-icon {
+
+    background: #dcfce7;
+}
+
+
+.consultation-icon {
+
+    background: #fef3c7;
+}
+
+
+.surgery-icon {
+
+    background: #ede9fe;
+}
+
+
+.emergency-icon {
+
+    background: #fee2e2;
+}
+
+
+.off-duty-icon {
+
+    background: #e5e7eb;
+}
+
+
+
+/* CARD SIDE BARS */
+
+.summary-card:nth-child(1)::before {
+
+    background: #64748b;
+}
+
+
+.summary-card:nth-child(2)::before {
+
+    background: #22c55e;
+}
+
+
+.summary-card:nth-child(3)::before {
+
+    background: #f59e0b;
+}
+
+
+.summary-card:nth-child(4)::before {
+
+    background: #8b5cf6;
+}
+
+
+.summary-card:nth-child(5)::before {
+
+    background: #ef4444;
+}
+
+
+.summary-card:nth-child(6)::before {
+
+    background: #94a3b8;
+}
+
+
+
+/* =====================================================
+   SECTION HEADER
+   ===================================================== */
+
+.doctor-section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.doctor-section-header h2 {
+
+    font-size: 21px;
+}
+
+
+.doctor-section-header p {
+
+    margin-top: 5px;
+
+    color: #7b8794;
+
+    font-size: 13px;
+}
+
+
+.doctor-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.doctor-actions select {
+
+    min-width: 170px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #d7dee8;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: #374151;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+.doctor-actions select:focus {
+
+    border-color: #1769aa;
+}
+
+
+
+/* =====================================================
+   DOCTOR GRID
+   ===================================================== */
+
+.doctor-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+
+
+/* =====================================================
+   DOCTOR CARD
+   ===================================================== */
+
+.doctor-card {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+
+    position: relative;
+}
+
+
+.doctor-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(15, 23, 42, 0.08);
+}
+
+
+
+/* CARD TOP */
+
+.doctor-card-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 20px;
+}
+
+
+.doctor-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.doctor-avatar {
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: #e8f1fa;
+
+    color: #1769aa;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+    font-size: 16px;
+}
+
+
+.doctor-name {
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    color: #1f2937;
+}
+
+
+.doctor-department {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #7b8794;
+
+    font-size: 12px;
+}
+
+
+
+/* STATUS */
+
+.doctor-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+
+.status-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+}
+
+
+.status-available {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+
+.status-available .status-dot {
+
+    background: #22c55e;
+}
+
+
+.status-consultation {
+
+    background: #fef3c7;
+
+    color: #92400e;
+}
+
+
+.status-consultation .status-dot {
+
+    background: #f59e0b;
+}
+
+
+.status-surgery {
+
+    background: #ede9fe;
+
+    color: #6d28d9;
+}
+
+
+.status-surgery .status-dot {
+
+    background: #8b5cf6;
+}
+
+
+.status-emergency {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+}
+
+
+.status-emergency .status-dot {
+
+    background: #ef4444;
+}
+
+
+.status-off-duty {
+
+    background: #f1f5f9;
+
+    color: #475569;
+}
+
+
+.status-off-duty .status-dot {
+
+    background: #94a3b8;
+}
+
+
+
+/* =====================================================
+   ASSIGNMENT
+   ===================================================== */
+
+.assignment-box {
+
+    padding-top: 16px;
+
+    border-top:
+        1px solid
+        #edf1f5;
+}
+
+
+.assignment-label {
+
+    display: block;
+
+    color: #7b8794;
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+
+.assignment-value {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #374151;
+}
+
+
+
+/* =====================================================
+   DOCTOR EXTRA DETAILS
+   ===================================================== */
+
+.doctor-meta {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-top: 16px;
+}
+
+
+.meta-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.meta-label {
+
+    font-size: 10px;
+
+    color: #94a3b8;
+
+    text-transform: uppercase;
+}
+
+
+.meta-value {
+
+    font-size: 12px;
+
+    color: #475569;
+}
+
+
+
+/* =====================================================
+   NO DOCTORS
+   ===================================================== */
+
+.no-doctors {
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    padding: 60px 20px;
+
+    margin-top: 20px;
+}
+
+
+.no-doctors-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 15px;
+}
+
+
+.no-doctors h3 {
+
+    font-size: 18px;
+
+    margin-bottom: 7px;
+}
+
+
+.no-doctors p {
+
+    color: #7b8794;
+
+    font-size: 13px;
+}
+
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1250px) {
+
+    .doctor-summary {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+
+    .doctor-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .sidebar {
+
+        width: 210px;
+    }
+
+
+    .main-content {
+
+        margin-left: 210px;
+
+        padding: 25px;
+    }
+
+
+    .doctor-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .doctor-section-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .sidebar {
+
+        position: relative;
+
+        width: 100%;
+
+        height: auto;
+    }
+
+
+    .main-content {
+
+        margin-left: 0;
+    }
+
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+
+    .doctor-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .doctor-summary {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .doctor-actions {
+
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+
+    .doctor-actions select {
+
+        width: 100%;
+    }
+
+}
+    </style>
+</body>
+<body>
+    <script>
+/* =====================================================
+   HOSPITAL DOCTORS
+   ===================================================== */
+
+
+/*
+    Change this URL if your backend uses
+    another endpoint.
+
+    Example:
+
+    /api/hospital/doctors
+
+    or
+
+    http://localhost:5000/api/hospital/doctors
+*/
+
+const API_URL = "/api/hospital/doctors";
+
+
+/* =====================================================
+   GLOBAL DATA
+   ===================================================== */
+
+let doctors = [];
+
+
+
+/* =====================================================
+   DOM ELEMENTS
+   ===================================================== */
+
+const loading =
+    document.getElementById("loading");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const doctorGrid =
+    document.getElementById("doctorGrid");
+
+const noDoctors =
+    document.getElementById("noDoctors");
+
+const departmentFilter =
+    document.getElementById("departmentFilter");
+
+const statusFilter =
+    document.getElementById("statusFilter");
+
+
+
+/* =====================================================
+   LOAD DOCTORS FROM BACKEND
+   ===================================================== */
+
+async function loadDoctors() {
+
+    try {
+
+        loading.classList.remove("hidden");
+
+        errorMessage.classList.add("hidden");
+
+
+        /*
+            credentials: include
+
+            This sends the existing login
+            session/cookie to your backend.
+
+            Therefore the backend can identify
+            which hospital is currently logged in.
+        */
+
+        const response =
+            await fetch(API_URL, {
+
+                method: "GET",
+
+                credentials: "include",
+
+                headers: {
+                    "Content-Type": "application/json"
+                }
+
+            });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP Error: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Doctor data received:",
+            data
+        );
+
+
+        /*
+            Store doctor information.
+        */
+
+        doctors =
+            Array.isArray(data.doctors)
+                ? data.doctors
+                : [];
+
+
+        /*
+            Hospital information
+        */
+
+        updateHospitalInformation(
+            data.hospital
+        );
+
+
+        /*
+            Update summary numbers
+        */
+
+        updateDoctorSummary(
+            data.summary,
+            doctors
+        );
+
+
+        /*
+            Create department filter
+        */
+
+        createDepartmentFilter(
+            doctors
+        );
+
+
+        /*
+            Display doctor cards
+        */
+
+        renderDoctors();
+
+
+    } catch (error) {
+
+        console.error(
+            "Doctor loading error:",
+            error
+        );
+
+
+        showError();
+
+    } finally {
+
+        loading.classList.add("hidden");
+
+    }
+
+}
+
+
+
+/* =====================================================
+   HOSPITAL INFORMATION
+   ===================================================== */
+
+function updateHospitalInformation(hospital) {
+
+    if (!hospital) {
+        return;
+    }
+
+
+    const name =
+        hospital.name ||
+        "Hospital";
+
+
+    const location =
+        hospital.location ||
+        "Location unavailable";
+
+
+    document.getElementById(
+        "hospitalName"
+    ).textContent = name;
+
+
+    document.getElementById(
+        "hospitalLocation"
+    ).textContent = location;
+
+
+    document.getElementById(
+        "profileInitial"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
+}
+
+
+
+/* =====================================================
+   DOCTOR SUMMARY
+   ===================================================== */
+
+function updateDoctorSummary(
+    summary,
+    doctorList
+) {
+
+    /*
+        If backend already provides
+        summary values, use them.
+
+        Otherwise calculate them
+        from individual doctor records.
+    */
+
+    if (!summary) {
+
+        summary = calculateSummary(
+            doctorList
+        );
+
+    }
+
+
+    document.getElementById(
+        "totalDoctors"
+    ).textContent =
+        summary.total ?? 0;
+
+
+    document.getElementById(
+        "availableDoctors"
+    ).textContent =
+        summary.available ?? 0;
+
+
+    document.getElementById(
+        "consultationDoctors"
+    ).textContent =
+        summary.inConsultation ?? 0;
+
+
+    document.getElementById(
+        "surgeryDoctors"
+    ).textContent =
+        summary.inSurgery ?? 0;
+
+
+    document.getElementById(
+        "emergencyDoctors"
+    ).textContent =
+        summary.emergencyDuty ?? 0;
+
+
+    document.getElementById(
+        "offDutyDoctors"
+    ).textContent =
+        summary.offDuty ?? 0;
+
+}
+
+
+
+/* =====================================================
+   CALCULATE SUMMARY
+   ===================================================== */
+
+function calculateSummary(
+    doctorList
+) {
+
+    const summary = {
+
+        total: doctorList.length,
+
+        available: 0,
+
+        inConsultation: 0,
+
+        inSurgery: 0,
+
+        emergencyDuty: 0,
+
+        offDuty: 0
+
+    };
+
+
+    doctorList.forEach(doctor => {
+
+        const status =
+            normalizeStatus(
+                doctor.status
+            );
+
+
+        switch (status) {
+
+            case "available":
+
+                summary.available++;
+
+                break;
+
+
+            case "in consultation":
+
+                summary.inConsultation++;
+
+                break;
+
+
+            case "in surgery":
+
+                summary.inSurgery++;
+
+                break;
+
+
+            case "emergency duty":
+
+                summary.emergencyDuty++;
+
+                break;
+
+
+            case "off duty":
+
+                summary.offDuty++;
+
+                break;
+
+        }
+
+    });
+
+
+    return summary;
+
+}
+
+
+
+/* =====================================================
+   CREATE DEPARTMENT FILTER
+   ===================================================== */
+
+function createDepartmentFilter(
+    doctorList
+) {
+
+    const departments =
+        [
+            ...new Set(
+                doctorList
+                    .map(
+                        doctor =>
+                            doctor.department
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
+
+
+    /*
+        Keep "All Departments"
+    */
+
+    departmentFilter.innerHTML = `
+
+        <option value="all">
+            All Departments
+        </option>
+
+    `;
+
+
+    departments.forEach(
+        department => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                department;
+
+
+            option.textContent =
+                department;
+
+
+            departmentFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   RENDER DOCTORS
+   ===================================================== */
+
+function renderDoctors() {
+
+    const selectedDepartment =
+        departmentFilter.value;
+
+
+    const selectedStatus =
+        statusFilter.value;
+
+
+    const filteredDoctors =
+        doctors.filter(doctor => {
+
+            const departmentMatch =
+                selectedDepartment === "all" ||
+                doctor.department ===
+                selectedDepartment;
+
+
+            const statusMatch =
+                selectedStatus === "all" ||
+                normalizeStatus(
+                    doctor.status
+                ) ===
+                normalizeStatus(
+                    selectedStatus
+                );
+
+
+            return (
+                departmentMatch &&
+                statusMatch
+            );
+
+        });
+
+
+    doctorGrid.innerHTML = "";
+
+
+    if (filteredDoctors.length === 0) {
+
+        noDoctors.classList.remove(
+            "hidden"
+        );
+
+        return;
+
+    }
+
+
+    noDoctors.classList.add(
+        "hidden"
+    );
+
+
+    filteredDoctors.forEach(
+        doctor => {
+
+            const card =
+                createDoctorCard(
+                    doctor
+                );
+
+
+            doctorGrid.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   CREATE DOCTOR CARD
+   ===================================================== */
+
+function createDoctorCard(
+    doctor
+) {
+
+    const card =
+        document.createElement("article");
+
+
+    card.className =
+        "doctor-card";
+
+
+    const name =
+        doctor.name ||
+        "Doctor";
+
+
+    const department =
+        doctor.department ||
+        "Department unavailable";
+
+
+    const status =
+        doctor.status ||
+        "Unknown";
+
+
+    const assignment =
+        doctor.currentAssignment ||
+        "No current assignment";
+
+
+    const initials =
+        getInitials(name);
+
+
+    const statusClass =
+        getStatusClass(status);
+
+
+    /*
+        Optional backend fields.
+    */
+
+    const specialization =
+        doctor.specialization ||
+        department;
+
+
+    const experience =
+        doctor.experience !== undefined
+            ? `${doctor.experience} years`
+            : null;
+
+
+    card.innerHTML = `
+
+        <div class="doctor-card-top">
+
+
+            <div class="doctor-profile">
+
+                <div class="doctor-avatar">
+
+                    ${escapeHTML(initials)}
+
+                </div>
+
+
+                <div>
+
+                    <div class="doctor-name">
+
+                        ${escapeHTML(name)}
+
+                    </div>
+
+
+                    <span class="doctor-department">
+
+                        ${escapeHTML(
+                            specialization
+                        )}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="
+                doctor-status
+                ${statusClass}
+            ">
+
+                <span class="status-dot"></span>
+
+                ${escapeHTML(status)}
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="assignment-box">
+
+            <span class="assignment-label">
+
+                Current Assignment
+
+            </span>
+
+
+            <div class="assignment-value">
+
+                ${escapeHTML(
+                    assignment
+                )}
+
+            </div>
+
+        </div>
+
+
+
+        ${
+            experience
+                ? `
+
+                <div class="doctor-meta">
+
+                    <div class="meta-item">
+
+                        <span class="meta-label">
+                            Experience
+                        </span>
+
+                        <span class="meta-value">
+                            ${escapeHTML(
+                                experience
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                `
+                : ""
+        }
+
+    `;
+
+
+    return card;
+
+}
+
+
+
+/* =====================================================
+   STATUS CLASS
+   ===================================================== */
+
+function getStatusClass(status) {
+
+    const normalized =
+        normalizeStatus(status);
+
+
+    switch (normalized) {
+
+        case "available":
+
+            return "status-available";
+
+
+        case "in consultation":
+
+            return "status-consultation";
+
+
+        case "in surgery":
+
+            return "status-surgery";
+
+
+        case "emergency duty":
+
+            return "status-emergency";
+
+
+        case "off duty":
+
+            return "status-off-duty";
+
+
+        default:
+
+            return "status-off-duty";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   NORMALIZE STATUS
+   ===================================================== */
+
+function normalizeStatus(status) {
+
+    return String(
+        status || ""
+    )
+        .trim()
+        .toLowerCase();
+
+}
+
+
+
+/* =====================================================
+   GET INITIALS
+   ===================================================== */
+
+function getInitials(name) {
+
+    const words =
+        name
+            .replace("Dr.", "")
+            .trim()
+            .split(/\s+/);
+
+
+    if (words.length === 1) {
+
+        return words[0]
+            .substring(0, 2)
+            .toUpperCase();
+
+    }
+
+
+    return (
+        words[0].charAt(0) +
+        words[words.length - 1]
+            .charAt(0)
+    ).toUpperCase();
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+   ===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replaceAll("&", "&amp;")
+
+        .replaceAll("<", "&lt;")
+
+        .replaceAll(">", "&gt;")
+
+        .replaceAll('"', "&quot;")
+
+        .replaceAll("'", "&#039;");
+
+}
+
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+function showError() {
+
+    errorMessage.textContent =
+        "Unable to load doctors. " +
+        "Check the backend connection.";
+
+    errorMessage.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+
+/* =====================================================
+   FILTER EVENTS
+   ===================================================== */
+
+departmentFilter.addEventListener(
+    "change",
+    renderDoctors
+);
+
+
+statusFilter.addEventListener(
+    "change",
+    renderDoctors
+);
+
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await fetch(
+                    "/api/auth/logout",
+                    {
+                        method: "POST",
+
+                        credentials:
+                            "include"
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+
+/* =====================================================
+   INITIAL LOAD
+   ===================================================== */
+
+loadDoctors();
+    </script>
+</body>
+</html>

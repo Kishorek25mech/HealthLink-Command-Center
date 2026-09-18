@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Resources | Hospital Command Center</title>
+    <link rel="stylesheet" href="emergency-resources.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">+</div>
+            <div>
+                <h2>MedCommand</h2>
+                <span>Hospital Command Center</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="beds.html">Beds</a>
+            <a href="doctors.html">Doctors</a>
+            <a href="nurses.html">Nurses</a>
+            <a href="equipment.html">Equipment</a>
+            <a href="patients.html">Patient Queues</a>
+            <a href="or.html">Operation Rooms</a>
+
+            <a href="emergency-resources.html" class="active">
+                Emergency Resources
+            </a>
+
+            <a href="hospitals.html">Hospital Network</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="settings.html">Settings</a>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="top-header">
+            <div>
+                <p class="page-label">RESOURCE MANAGEMENT</p>
+                <h1>Emergency Resources</h1>
+                <p class="subtitle">
+                    Real-time availability of critical emergency resources
+                </p>
+            </div>
+
+            <div class="hospital-info">
+                <span class="status-dot"></span>
+                <div>
+                    <strong id="hospitalName">Loading Hospital...</strong>
+                    <small id="lastUpdated">Updating...</small>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Emergency Alert -->
+        <section id="emergencyAlert" class="emergency-alert hidden">
+            <div class="alert-icon">!</div>
+            <div>
+                <strong>Emergency Resource Shortage</strong>
+                <p id="alertMessage">
+                    Some emergency resources are critically low.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Resource Cards -->
+        <section class="resource-grid" id="resourceGrid">
+
+            <!-- Cards are generated dynamically by JavaScript -->
+
+        </section>
+
+
+        <!-- Resource Summary -->
+        <section class="summary-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Emergency Resource Overview</h2>
+                    <p>Current emergency capacity of your hospital</p>
+                </div>
+            </div>
+
+            <div class="summary-table-wrapper">
+
+                <table class="resource-table">
+
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Total</th>
+                            <th>Available</th>
+                            <th>Utilized</th>
+                            <th>Availability</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="resourceTableBody">
+                        <!-- Generated dynamically -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer>
+            <span>Emergency resources are synchronized with hospital backend.</span>
+
+            <button id="refreshBtn" class="refresh-btn">
+                ↻ Refresh Data
+            </button>
+        </footer>
+
+    </main>
+
+
+    <script src="emergency-resources.js"></script>
+
+</body>
+<body>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+    display: flex;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #101827;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px 28px;
+    border-bottom: 1px solid #293447;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #2563eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo h2 {
+    font-size: 18px;
+}
+
+.logo span {
+    font-size: 10px;
+    color: #9ca8bb;
+}
+
+nav {
+    margin-top: 25px;
+}
+
+nav a,
+.sidebar-bottom a {
+    display: block;
+    text-decoration: none;
+    color: #aeb8c9;
+    padding: 13px 15px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+nav a:hover,
+.sidebar-bottom a:hover {
+    background: #1d293b;
+    color: white;
+}
+
+nav a.active {
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+#logoutBtn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #aeb8c9;
+    text-align: left;
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    background: #1d293b;
+    color: white;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 30px 40px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-label {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 7px;
+}
+
+.top-header h1 {
+    font-size: 30px;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.hospital-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.hospital-info small {
+    display: block;
+    color: #8a93a3;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+
+/* =========================
+   EMERGENCY ALERT
+========================= */
+
+.emergency-alert {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    background: #fff4e5;
+    border: 1px solid #f6c77b;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.alert-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #f59e0b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.emergency-alert strong {
+    color: #92400e;
+}
+
+.emergency-alert p {
+    color: #92400e;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* =========================
+   RESOURCE CARDS
+========================= */
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.resource-card {
+    background: white;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 5px solid #22c55e;
+    transition: 0.2s;
+}
+
+.resource-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.resource-card.limited {
+    border-left-color: #f59e0b;
+}
+
+.resource-card.critical {
+    border-left-color: #ef4444;
+}
+
+.resource-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resource-icon {
+    width: 45px;
+    height: 45px;
+    background: #eef4ff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.status-badge {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+.status-badge.available {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-badge.limited {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.status-badge.critical {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.resource-card h3 {
+    margin-top: 18px;
+    font-size: 16px;
+}
+
+.resource-count {
+    margin-top: 8px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.resource-count span {
+    color: #9ca3af;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.resource-label {
+    color: #8a93a3;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+
+/* Progress bar */
+
+.progress-container {
+    margin-top: 17px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 10px;
+}
+
+.progress-fill.available {
+    background: #22c55e;
+}
+
+.progress-fill.limited {
+    background: #f59e0b;
+}
+
+.progress-fill.critical {
+    background: #ef4444;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #8a93a3;
+    margin-top: 7px;
+}
+
+
+/* =========================
+   SUMMARY TABLE
+========================= */
+
+.summary-section {
+    margin-top: 35px;
+}
+
+.section-heading {
+    margin-bottom: 15px;
+}
+
+.section-heading h2 {
+    font-size: 20px;
+}
+
+.section-heading p {
+    color: #8a93a3;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.summary-table-wrapper {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.resource-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resource-table th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 15px 18px;
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.resource-table td {
+    padding: 16px 18px;
+    border-top: 1px solid #edf0f4;
+    font-size: 13px;
+}
+
+.resource-table td:first-child {
+    font-weight: 600;
+}
+
+.table-status {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+.table-status.available {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.table-status.limited {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.table-status.critical {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8a93a3;
+    font-size: 12px;
+}
+
+.refresh-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.refresh-btn:hover {
+    background: #1d4ed8;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .resource-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 70px;
+        padding: 20px 8px;
+    }
+
+    .logo h2,
+    .logo span,
+    nav a,
+    .sidebar-bottom a,
+    #logoutBtn {
+        font-size: 0;
+    }
+
+    .main-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 20px;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .resource-table {
+        min-width: 700px;
+    }
+
+    .summary-table-wrapper {
+        overflow-x: auto;
+    }
+}
+    </style>
+</body>
+<body>
+    <script>
+// ==========================================
+// EMERGENCY RESOURCES PAGE
+// ==========================================
+
+// Change this to your actual backend URL
+const API_BASE_URL = "http://localhost:5000/api";
+
+
+// ==========================================
+// GET LOGGED-IN HOSPITAL
+// ==========================================
+
+async function loadEmergencyResources() {
+
+    try {
+
+        /*
+         * If you are using JWT authentication,
+         * the token should have been stored after login.
+         */
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            window.location.href = "login.html";
+            return;
+        }
+
+
+        // Fetch current hospital information
+        const response = await fetch(
+            `${API_BASE_URL}/hospital/emergency-resources`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        if (!response.ok) {
+            throw new Error("Unable to fetch emergency resources");
+        }
+
+
+        const data = await response.json();
+
+
+        console.log("Emergency Resource Data:", data);
+
+
+        // Hospital name
+        document.getElementById("hospitalName").textContent =
+            data.hospital.name;
+
+
+        // Update time
+        document.getElementById("lastUpdated").textContent =
+            "Last updated: " + formatDate(data.updatedAt);
+
+
+        // Display resources
+        displayResources(data.resources);
+
+
+    } catch (error) {
+
+        console.error("Error:", error);
+
+        showError();
+
+    }
+
+}
+
+
+// ==========================================
+// DISPLAY RESOURCE CARDS
+// ==========================================
+
+function displayResources(resources) {
+
+    const grid = document.getElementById("resourceGrid");
+
+    const tableBody = document.getElementById("resourceTableBody");
+
+    grid.innerHTML = "";
+
+    tableBody.innerHTML = "";
+
+
+    let criticalResources = [];
+
+
+
+    resources.forEach(resource => {
+
+        const total = Number(resource.total) || 0;
+
+        const available = Number(resource.available) || 0;
+
+        const utilized = Math.max(total - available, 0);
+
+
+        let percentage = 0;
+
+        if (total > 0) {
+            percentage = (available / total) * 100;
+        }
+
+
+        const status = calculateStatus(percentage);
+
+
+        if (status === "critical") {
+            criticalResources.push(resource.name);
+        }
+
+
+        // --------------------------
+        // CARD
+        // --------------------------
+
+        const card = document.createElement("div");
+
+        card.className = `resource-card ${status}`;
+
+
+        card.innerHTML = `
+
+            <div class="resource-top">
+
+                <div class="resource-icon">
+                    ${resource.icon || "⚕"}
+                </div>
+
+                <span class="status-badge ${status}">
+                    ${capitalize(status)}
+                </span>
+
+            </div>
+
+
+            <h3>${escapeHTML(resource.name)}</h3>
+
+
+            <div class="resource-count">
+                ${available}
+                <span>/ ${total} Available</span>
+            </div>
+
+
+            <div class="resource-label">
+                ${utilized} currently utilized
+            </div>
+
+
+            <div class="progress-container">
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill ${status}"
+                        style="width: ${percentage}%"
+                    ></div>
+
+                </div>
+
+
+                <div class="progress-text">
+
+                    <span>Available capacity</span>
+
+                    <span>${Math.round(percentage)}%</span>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        grid.appendChild(card);
+
+
+
+        // --------------------------
+        // TABLE ROW
+        // --------------------------
+
+        const row = document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHTML(resource.name)}
+            </td>
+
+            <td>
+                ${total}
+            </td>
+
+            <td>
+                ${available}
+            </td>
+
+            <td>
+                ${utilized}
+            </td>
+
+            <td>
+                ${Math.round(percentage)}%
+            </td>
+
+            <td>
+
+                <span class="table-status ${status}">
+                    ${capitalize(status)}
+                </span>
+
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+    });
+
+
+    // Show alert if resources are critical
+
+    if (criticalResources.length > 0) {
+
+        showEmergencyAlert(criticalResources);
+
+    } else {
+
+        document
+            .getElementById("emergencyAlert")
+            .classList.add("hidden");
+
+    }
+
+}
+
+
+// ==========================================
+// RESOURCE STATUS
+// ==========================================
+
+function calculateStatus(percentage) {
+
+    /*
+     * You can change these thresholds
+     * according to your hospital rules.
+     */
+
+    if (percentage <= 20) {
+        return "critical";
+    }
+
+    if (percentage <= 40) {
+        return "limited";
+    }
+
+    return "available";
+
+}
+
+
+// ==========================================
+// EMERGENCY ALERT
+// ==========================================
+
+function showEmergencyAlert(resources) {
+
+    const alert = document.getElementById("emergencyAlert");
+
+    const message = document.getElementById("alertMessage");
+
+
+    message.textContent =
+        `${resources.join(", ")} ${resources.length === 1 ? "is" : "are"} critically low. Consider reallocating resources or requesting support from nearby hospitals.`;
+
+
+    alert.classList.remove("hidden");
+
+}
+
+
+// ==========================================
+// REFRESH
+// ==========================================
+
+document
+    .getElementById("refreshBtn")
+    .addEventListener("click", function () {
+
+        loadEmergencyResources();
+
+    });
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", function () {
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("hospital");
+
+        window.location.href = "login.html";
+
+    });
+
+
+// ==========================================
+// DATE FORMAT
+// ==========================================
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "Just now";
+    }
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+}
+
+
+// ==========================================
+// CAPITALIZE
+// ==========================================
+
+function capitalize(value) {
+
+    return value.charAt(0).toUpperCase() + value.slice(1);
+
+}
+
+
+// ==========================================
+// BASIC HTML ESCAPE
+// ==========================================
+
+function escapeHTML(value) {
+
+    const div = document.createElement("div");
+
+    div.textContent = value;
+
+    return div.innerHTML;
+
+}
+
+
+// ==========================================
+// ERROR MESSAGE
+// ==========================================
+
+function showError() {
+
+    const grid = document.getElementById("resourceGrid");
+
+    grid.innerHTML = `
+
+        <div style="
+            grid-column: 1 / -1;
+            background: white;
+            padding: 40px;
+            border-radius: 14px;
+            text-align: center;
+        ">
+
+            <h3>Unable to load emergency resources</h3>
+
+            <p style="
+                margin-top: 8px;
+                color: #6b7280;
+            ">
+                Check your backend connection and try refreshing the page.
+            </p>
+
+            <button
+                onclick="loadEmergencyResources()"
+                style="
+                    margin-top: 15px;
+                    padding: 9px 15px;
+                    border: none;
+                    border-radius: 7px;
+                    background: #2563eb;
+                    color: white;
+                    cursor: pointer;
+                "
+            >
+                Try Again
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+loadEmergencyResources();
+    </script>
+</body>
+</html>

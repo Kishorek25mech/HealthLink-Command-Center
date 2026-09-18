@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurses | Hospital Command Center</title>
+
+    <link rel="stylesheet" href="nurses.css">
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1>Nurses</h1>
+                <p>Monitor nurse availability and departmental allocation</p>
+            </div>
+
+            <div class="hospital-info">
+                <span id="hospitalName">Loading hospital...</span>
+                <span class="status-dot"></span>
+                <span>Live</span>
+            </div>
+        </div>
+
+
+        <!-- Summary Cards -->
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="card-icon">👩‍⚕️</div>
+                <div>
+                    <p>Total Nurses</p>
+                    <h2 id="totalNurses">--</h2>
+                </div>
+            </div>
+
+            <div class="summary-card available">
+                <div class="card-icon">✓</div>
+                <div>
+                    <p>Available</p>
+                    <h2 id="availableNurses">--</h2>
+                </div>
+            </div>
+
+            <div class="summary-card emergency">
+                <div class="card-icon">⚕</div>
+                <div>
+                    <p>Emergency</p>
+                    <h2 id="emergencyNurses">--</h2>
+                </div>
+            </div>
+
+            <div class="summary-card icu">
+                <div class="card-icon">+</div>
+                <div>
+                    <p>ICU</p>
+                    <h2 id="icuNurses">--</h2>
+                </div>
+            </div>
+
+            <div class="summary-card ward">
+                <div class="card-icon">▦</div>
+                <div>
+                    <p>General Ward</p>
+                    <h2 id="generalWardNurses">--</h2>
+                </div>
+            </div>
+
+            <div class="summary-card other">
+                <div class="card-icon">•</div>
+                <div>
+                    <p>Other</p>
+                    <h2 id="otherNurses">--</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Department Allocation -->
+        <section class="content-card">
+
+            <div class="section-header">
+                <div>
+                    <h2>Nurse Allocation</h2>
+                    <p>Current nurse distribution across hospital departments</p>
+                </div>
+
+                <button id="refreshBtn" class="refresh-btn">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="allocation-container">
+
+                <div class="allocation-row">
+                    <div class="allocation-title">
+                        <span>Emergency Department</span>
+                        <strong id="emergencyPercent">--%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="emergencyProgress" class="progress emergency-progress"></div>
+                    </div>
+
+                    <span id="emergencyAllocation">-- nurses</span>
+                </div>
+
+
+                <div class="allocation-row">
+                    <div class="allocation-title">
+                        <span>ICU</span>
+                        <strong id="icuPercent">--%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="icuProgress" class="progress icu-progress"></div>
+                    </div>
+
+                    <span id="icuAllocation">-- nurses</span>
+                </div>
+
+
+                <div class="allocation-row">
+                    <div class="allocation-title">
+                        <span>General Ward</span>
+                        <strong id="wardPercent">--%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="wardProgress" class="progress ward-progress"></div>
+                    </div>
+
+                    <span id="wardAllocation">-- nurses</span>
+                </div>
+
+
+                <div class="allocation-row">
+                    <div class="allocation-title">
+                        <span>Other Departments</span>
+                        <strong id="otherPercent">--%</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div id="otherProgress" class="progress other-progress"></div>
+                    </div>
+
+                    <span id="otherAllocation">-- nurses</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Nurse Status -->
+        <section class="content-card">
+
+            <div class="section-header">
+                <div>
+                    <h2>Current Nurse Status</h2>
+                    <p>Real-time staffing status</p>
+                </div>
+            </div>
+
+            <div class="status-grid">
+
+                <div class="status-item">
+                    <span class="status-indicator green"></span>
+                    <div>
+                        <h3>Available</h3>
+                        <p id="statusAvailable">-- nurses</p>
+                    </div>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator red"></span>
+                    <div>
+                        <h3>Emergency Duty</h3>
+                        <p id="statusEmergency">-- nurses</p>
+                    </div>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator blue"></span>
+                    <div>
+                        <h3>ICU</h3>
+                        <p id="statusICU">-- nurses</p>
+                    </div>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator gray"></span>
+                    <div>
+                        <h3>Other Departments</h3>
+                        <p id="statusOther">-- nurses</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Last Updated -->
+        <div class="last-updated">
+            Last updated: <span id="lastUpdated">--</span>
+        </div>
+
+    </div>
+
+    <script src="nurses.js"></script>
+
+</body>
+<body>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #1f2937;
+}
+
+.page {
+    padding: 30px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 13px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+}
+
+
+/* =========================
+   SUMMARY CARDS
+========================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.summary-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.summary-card p {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.summary-card h2 {
+    font-size: 27px;
+}
+
+.available .card-icon {
+    background: #ecfdf5;
+}
+
+.emergency .card-icon {
+    background: #fef2f2;
+}
+
+.icu .card-icon {
+    background: #eff6ff;
+}
+
+.ward .card-icon {
+    background: #f5f3ff;
+}
+
+.other .card-icon {
+    background: #f3f4f6;
+}
+
+
+/* =========================
+   CONTENT CARD
+========================= */
+
+.content-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.section-header p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.refresh-btn {
+    border: 1px solid #d1d5db;
+    background: white;
+    padding: 9px 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.refresh-btn:hover {
+    background: #f9fafb;
+}
+
+
+/* =========================
+   ALLOCATION
+========================= */
+
+.allocation-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.allocation-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 100px;
+    align-items: center;
+    gap: 20px;
+}
+
+.allocation-title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.allocation-title strong {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #edf0f3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+.emergency-progress {
+    background: #ef4444;
+}
+
+.icu-progress {
+    background: #3b82f6;
+}
+
+.ward-progress {
+    background: #8b5cf6;
+}
+
+.other-progress {
+    background: #9ca3af;
+}
+
+.allocation-row > span {
+    text-align: right;
+    color: #4b5563;
+    font-size: 13px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.status-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-item h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.status-item p {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.status-indicator {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.green {
+    background: #22c55e;
+}
+
+.red {
+    background: #ef4444;
+}
+
+.blue {
+    background: #3b82f6;
+}
+
+.gray {
+    background: #9ca3af;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.last-updated {
+    text-align: right;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .allocation-row {
+        grid-template-columns: 150px 1fr 90px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .page {
+        padding: 18px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .allocation-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .allocation-row > span {
+        text-align: left;
+    }
+}
+    </style>
+</body>
+<body>
+    <script>
+        const API_BASE_URL = "http://localhost:5000/api";
+
+
+// ==========================================
+// LOAD NURSE DATA
+// ==========================================
+
+async function loadNurseData() {
+
+    try {
+
+        /*
+         * Replace this endpoint with the endpoint
+         * already created in your backend.
+         *
+         * Example:
+         * GET /api/hospitals/me/nurses
+         */
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospitals/me/nurses`,
+            {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error("Unable to fetch nurse data");
+        }
+
+
+        const data = await response.json();
+
+
+        /*
+         * Expected backend response:
+         *
+         * {
+         *   hospitalName: "ABC Hospital",
+         *   nurses: {
+         *      total: 110,
+         *      available: 26,
+         *      emergency: 14,
+         *      icu: 18,
+         *      generalWard: 42,
+         *      other: 10
+         *   },
+         *   lastUpdated: "2026-09-19T01:30:00"
+         * }
+         */
+
+
+        displayNurseData(data);
+
+    }
+
+    catch (error) {
+
+        console.error("Nurse data error:", error);
+
+        showError();
+
+    }
+
+}
+
+
+// ==========================================
+// DISPLAY DATA
+// ==========================================
+
+function displayNurseData(data) {
+
+    const nurses = data.nurses;
+
+
+    // Hospital name
+
+    document.getElementById("hospitalName").textContent =
+        data.hospitalName || "Hospital";
+
+
+    // Summary cards
+
+    document.getElementById("totalNurses").textContent =
+        nurses.total ?? 0;
+
+    document.getElementById("availableNurses").textContent =
+        nurses.available ?? 0;
+
+    document.getElementById("emergencyNurses").textContent =
+        nurses.emergency ?? 0;
+
+    document.getElementById("icuNurses").textContent =
+        nurses.icu ?? 0;
+
+    document.getElementById("generalWardNurses").textContent =
+        nurses.generalWard ?? 0;
+
+    document.getElementById("otherNurses").textContent =
+        nurses.other ?? 0;
+
+
+    // Status section
+
+    document.getElementById("statusAvailable").textContent =
+        `${nurses.available ?? 0} nurses`;
+
+    document.getElementById("statusEmergency").textContent =
+        `${nurses.emergency ?? 0} nurses`;
+
+    document.getElementById("statusICU").textContent =
+        `${nurses.icu ?? 0} nurses`;
+
+    document.getElementById("statusOther").textContent =
+        `${nurses.other ?? 0} nurses`;
+
+
+    // Allocation
+
+    updateAllocation(
+        nurses.emergency,
+        nurses.total,
+        "emergencyProgress",
+        "emergencyPercent",
+        "emergencyAllocation"
+    );
+
+
+    updateAllocation(
+        nurses.icu,
+        nurses.total,
+        "icuProgress",
+        "icuPercent",
+        "icuAllocation"
+    );
+
+
+    updateAllocation(
+        nurses.generalWard,
+        nurses.total,
+        "wardProgress",
+        "wardPercent",
+        "wardAllocation"
+    );
+
+
+    updateAllocation(
+        nurses.other,
+        nurses.total,
+        "otherProgress",
+        "otherPercent",
+        "otherAllocation"
+    );
+
+
+    // Last updated
+
+    if (data.lastUpdated) {
+
+        const date = new Date(data.lastUpdated);
+
+        document.getElementById("lastUpdated").textContent =
+            date.toLocaleString();
+
+    }
+    else {
+
+        document.getElementById("lastUpdated").textContent =
+            new Date().toLocaleString();
+
+    }
+
+}
+
+
+// ==========================================
+// UPDATE PROGRESS BAR
+// ==========================================
+
+function updateAllocation(
+    value,
+    total,
+    progressId,
+    percentId,
+    textId
+) {
+
+    value = Number(value) || 0;
+    total = Number(total) || 0;
+
+
+    let percentage = 0;
+
+    if (total > 0) {
+        percentage = (value / total) * 100;
+    }
+
+
+    percentage = Math.min(percentage, 100);
+
+
+    document.getElementById(progressId).style.width =
+        `${percentage}%`;
+
+
+    document.getElementById(percentId).textContent =
+        `${percentage.toFixed(1)}%`;
+
+
+    document.getElementById(textId).textContent =
+        `${value} nurses`;
+
+}
+
+
+// ==========================================
+// ERROR MESSAGE
+// ==========================================
+
+function showError() {
+
+    document.getElementById("hospitalName").textContent =
+        "Unable to load hospital";
+
+    const fields = [
+        "totalNurses",
+        "availableNurses",
+        "emergencyNurses",
+        "icuNurses",
+        "generalWardNurses",
+        "otherNurses"
+    ];
+
+
+    fields.forEach(id => {
+
+        document.getElementById(id).textContent = "--";
+
+    });
+
+}
+
+
+// ==========================================
+// REFRESH BUTTON
+// ==========================================
+
+document
+    .getElementById("refreshBtn")
+    .addEventListener("click", loadNurseData);
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+loadNurseData();
+
+
+// ==========================================
+// AUTO REFRESH
+// ==========================================
+
+// Refresh every 30 seconds
+
+setInterval(loadNurseData, 30000);
+    </script>
+</body>
+</html>
