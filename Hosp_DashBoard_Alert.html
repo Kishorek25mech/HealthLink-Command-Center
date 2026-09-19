@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hospital Dashboard - Alerts</title>
+
+    <link rel="stylesheet" href="hospital-dashboard-alerts.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">+</div>
+            <div>
+                <h2>MedSync</h2>
+                <span>Hospital Network</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="#" class="nav-item active">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>🛏</span>
+                Beds
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>👨‍⚕</span>
+                Doctors
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>👩‍⚕</span>
+                Nurses
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚕</span>
+                Equipment
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>▤</span>
+                Patient Queue
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>▥</span>
+                Operating Rooms
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⇄</span>
+                Transfers
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⌁</span>
+                Hospital Network
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                System Operational
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                ↪ Logout
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="topbar">
+
+            <div>
+                <p class="page-label">HOSPITAL ADMINISTRATION</p>
+                <h1>Hospital Dashboard</h1>
+                <p class="hospital-location" id="hospitalLocation">
+                    Loading hospital information...
+                </p>
+            </div>
+
+            <div class="admin-profile">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-count">1</span>
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-avatar" id="profileAvatar">
+                        HA
+                    </div>
+
+                    <div>
+                        <strong id="adminName">
+                            Hospital Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-container">
+
+            <!-- RESOURCE CARDS -->
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <div class="card-icon beds">
+                        🛏
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-title">
+                            Total Beds
+                        </span>
+
+                        <strong id="totalBeds">
+                            --
+                        </strong>
+
+                        <small>
+                            Hospital Capacity
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <div class="card-icon emergency">
+                        🚑
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-title">
+                            Emergency Beds
+                        </span>
+
+                        <strong id="emergencyBeds">
+                            --
+                        </strong>
+
+                        <small>
+                            Currently Available
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <div class="card-icon doctors">
+                        👨‍⚕
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-title">
+                            Doctors
+                        </span>
+
+                        <strong id="doctorCount">
+                            --
+                        </strong>
+
+                        <small>
+                            Registered Doctors
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <div class="card-icon queue">
+                        👥
+                    </div>
+
+                    <div class="card-content">
+
+                        <span class="card-title">
+                            Patient Queue
+                        </span>
+
+                        <strong id="queueCount">
+                            --
+                        </strong>
+
+                        <small>
+                            Patients Waiting
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ALERT SECTION -->
+
+            <section class="alert-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="section-label">
+                            REAL-TIME MONITORING
+                        </p>
+
+                        <h2>
+                            Hospital Alerts
+                        </h2>
+                    </div>
+
+                    <div class="live-status">
+                        <span></span>
+                        LIVE
+                    </div>
+
+                </div>
+
+
+                <!-- DEMAND SURGE ALERT -->
+
+                <div class="surge-alert">
+
+                    <div class="alert-header">
+
+                        <div class="warning-icon">
+                            ⚠
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                UNEXPECTED DEMAND SURGE
+                            </h3>
+
+                            <p>
+                                Emergency patient arrivals have increased significantly.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-body">
+
+                        <div class="surge-message">
+
+                            <strong>
+                                Emergency patient arrivals increased
+                                <span class="increase">38%</span>.
+                            </strong>
+
+                            <p>
+                                Current hospital resources are under increased
+                                emergency pressure.
+                            </p>
+
+                        </div>
+
+
+                        <div class="surge-statistics">
+
+                            <div class="surge-stat">
+
+                                <span>
+                                    Patient Queue
+                                </span>
+
+                                <div class="value-change">
+
+                                    <strong>
+                                        27
+                                    </strong>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                    <strong class="danger-value">
+                                        41
+                                    </strong>
+
+                                </div>
+
+                                <small>
+                                    +14 patients
+                                </small>
+
+                            </div>
+
+
+                            <div class="vertical-divider"></div>
+
+
+                            <div class="surge-stat">
+
+                                <span>
+                                    Emergency Beds
+                                </span>
+
+                                <div class="value-change">
+
+                                    <strong>
+                                        8
+                                    </strong>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                    <strong class="danger-value">
+                                        3
+                                    </strong>
+
+                                </div>
+
+                                <small>
+                                    5 beds occupied
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-footer">
+
+                        <div class="alert-time">
+                            ● Detected 4 minutes ago
+                        </div>
+
+                        <button
+                            class="recommendation-btn"
+                            onclick="viewRecommendations()">
+
+                            VIEW RECOMMENDATIONS
+                            <span>→</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DOCTORS FROM BACKEND -->
+
+            <section class="doctors-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            STAFF MANAGEMENT
+                        </p>
+
+                        <h2>
+                            Available Doctors
+                        </h2>
+
+                    </div>
+
+                    <button
+                        class="refresh-btn"
+                        onclick="loadDoctors()">
+
+                        ↻ Refresh
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="doctor-grid"
+                    id="doctorGrid">
+
+                    <div class="loading">
+                        Loading doctors...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- RECOMMENDATION MODAL -->
+
+    <div
+        class="modal-overlay"
+        id="recommendationModal">
+
+        <div class="recommendation-modal">
+
+            <button
+                class="close-modal"
+                onclick="closeRecommendations()">
+
+                ×
+
+            </button>
+
+
+            <div class="modal-title">
+
+                <div class="modal-warning">
+                    ⚠
+                </div>
+
+                <div>
+
+                    <span>
+                        RESOURCE INTELLIGENCE
+                    </span>
+
+                    <h2>
+                        Recommended Actions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <p class="modal-description">
+
+                Based on the current emergency demand,
+                the system recommends reallocating available
+                hospital resources.
+
+            </p>
+
+
+            <div class="recommendation-list">
+
+                <div class="recommendation">
+
+                    <div class="recommendation-icon">
+                        👨‍⚕
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Reallocate Doctors
+                        </strong>
+
+                        <p>
+                            Assign available doctors to the
+                            Emergency Department.
+                        </p>
+
+                    </div>
+
+                    <span class="recommendation-tag">
+                        HIGH
+                    </span>
+
+                </div>
+
+
+                <div class="recommendation">
+
+                    <div class="recommendation-icon">
+                        🛏
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Increase Emergency Bed Capacity
+                        </strong>
+
+                        <p>
+                            Identify available beds that can
+                            be converted for emergency use.
+                        </p>
+
+                    </div>
+
+                    <span class="recommendation-tag">
+                        HIGH
+                    </span>
+
+                </div>
+
+
+                <div class="recommendation">
+
+                    <div class="recommendation-icon">
+                        🚑
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Monitor Incoming Transfers
+                        </strong>
+
+                        <p>
+                            Review nearby hospitals for possible
+                            patient transfer support.
+                        </p>
+
+                    </div>
+
+                    <span class="recommendation-tag medium">
+                        MEDIUM
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="cancel-btn"
+                    onclick="closeRecommendations()">
+
+                    CLOSE
+
+                </button>
+
+                <button
+                    class="apply-btn"
+                    onclick="applyRecommendations()">
+
+                    APPLY RECOMMENDATIONS
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="hospital-dashboard-alerts.js"></script>
+
+</body>
+<body>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: #f5f7fa;
+    color: #182230;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #0f1f2e;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px 16px;
+
+    z-index: 100;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 10px 30px;
+}
+
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+
+    background: #1f8f82;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    font-weight: bold;
+}
+
+
+.logo h2 {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+.logo span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #8fa2b5;
+
+    font-size: 10px;
+}
+
+
+nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.nav-item {
+    text-decoration: none;
+
+    color: #aebdcc;
+
+    padding: 13px 14px;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+
+.nav-item:hover {
+    background: #182f42;
+    color: white;
+}
+
+
+.nav-item.active {
+    background: #1b8b80;
+    color: white;
+}
+
+
+.nav-item span {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+
+.system-status {
+    color: #8fa2b5;
+
+    font-size: 11px;
+
+    padding: 15px 12px;
+
+    border-top: 1px solid #263b4d;
+}
+
+
+.status-dot {
+    display: inline-block;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #38c77c;
+
+    margin-right: 7px;
+}
+
+
+.logout-btn {
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #334b60;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #b7c4d0;
+
+    cursor: pointer;
+}
+
+
+.logout-btn:hover {
+    background: #1b2e40;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    margin-left: 250px;
+
+    min-height: 100vh;
+}
+
+
+.topbar {
+    height: 90px;
+
+    background: white;
+
+    border-bottom: 1px solid #e3e8ed;
+
+    padding: 20px 38px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.page-label,
+.section-label {
+    color: #1d8b81;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.1px;
+}
+
+
+.topbar h1 {
+    font-size: 24px;
+
+    margin-top: 4px;
+}
+
+
+.hospital-location {
+    margin-top: 3px;
+
+    color: #7d8995;
+
+    font-size: 12px;
+}
+
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+}
+
+
+.notification {
+    position: relative;
+
+    font-size: 19px;
+}
+
+
+.notification-count {
+    position: absolute;
+
+    right: -7px;
+    top: -7px;
+
+    width: 15px;
+    height: 15px;
+
+    background: #e34d4d;
+
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.profile-info {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #dcefeb;
+
+    color: #14766d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+    font-size: 12px;
+}
+
+
+.profile-info strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+
+.profile-info span {
+    display: block;
+
+    color: #8995a0;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard-container {
+    padding: 32px 38px;
+}
+
+
+/* RESOURCE CARDS */
+
+.resource-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 35px;
+}
+
+
+.resource-card {
+    background: white;
+
+    border: 1px solid #e5e9ed;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.card-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 21px;
+}
+
+
+.card-icon.beds {
+    background: #e9f4f8;
+}
+
+
+.card-icon.emergency {
+    background: #fceaea;
+}
+
+
+.card-icon.doctors {
+    background: #e9f4ee;
+}
+
+
+.card-icon.queue {
+    background: #f4edf9;
+}
+
+
+.card-content {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.card-title {
+    color: #7e8994;
+
+    font-size: 11px;
+
+    margin-bottom: 4px;
+}
+
+
+.card-content strong {
+    font-size: 24px;
+}
+
+
+.card-content small {
+    color: #9aa3ab;
+
+    font-size: 9px;
+
+    margin-top: 3px;
+}
+
+
+/* =========================
+   SECTION HEADING
+========================= */
+
+.section-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+
+.section-heading h2 {
+    font-size: 19px;
+
+    margin-top: 4px;
+}
+
+
+.live-status {
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #2a9c72;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.live-status span {
+    width: 7px;
+    height: 7px;
+
+    background: #35b878;
+
+    border-radius: 50%;
+}
+
+
+/* =========================
+   SURGE ALERT
+========================= */
+
+.surge-alert {
+    background: white;
+
+    border: 1px solid #f0c7c7;
+
+    border-left: 5px solid #df4d4d;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: 0 3px 12px rgba(20, 30, 40, 0.04);
+}
+
+
+.alert-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 20px 24px;
+
+    background: #fff7f7;
+
+    border-bottom: 1px solid #f3dddd;
+}
+
+
+.warning-icon {
+    width: 40px;
+    height: 40px;
+
+    background: #fde3e3;
+
+    color: #d84242;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 21px;
+}
+
+
+.alert-header h3 {
+    color: #c63c3c;
+
+    font-size: 14px;
+
+    letter-spacing: 0.5px;
+}
+
+
+.alert-header p {
+    color: #7f7373;
+
+    font-size: 11px;
+
+    margin-top: 4px;
+}
+
+
+.alert-body {
+    padding: 23px 24px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+
+.surge-message {
+    flex: 1;
+}
+
+
+.surge-message strong {
+    font-size: 15px;
+}
+
+
+.increase {
+    color: #d84040;
+}
+
+
+.surge-message p {
+    color: #89939d;
+
+    font-size: 11px;
+
+    margin-top: 7px;
+}
+
+
+.surge-statistics {
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+    min-width: 390px;
+}
+
+
+.surge-stat {
+    min-width: 150px;
+}
+
+
+.surge-stat > span {
+    display: block;
+
+    color: #788591;
+
+    font-size: 10px;
+
+    margin-bottom: 6px;
+}
+
+
+.value-change {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.value-change strong {
+    font-size: 22px;
+}
+
+
+.value-change span {
+    color: #a2abb3;
+}
+
+
+.value-change .danger-value {
+    color: #d84242;
+}
+
+
+.surge-stat small {
+    color: #d84242;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+
+    display: block;
+}
+
+
+.vertical-divider {
+    width: 1px;
+
+    height: 55px;
+
+    background: #e5e8eb;
+}
+
+
+.alert-footer {
+    border-top: 1px solid #edf0f2;
+
+    padding: 14px 24px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.alert-time {
+    color: #929ba3;
+
+    font-size: 10px;
+}
+
+
+.recommendation-btn {
+    background: #d84747;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    padding: 11px 17px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    letter-spacing: 0.3px;
+
+    transition: 0.2s;
+}
+
+
+.recommendation-btn:hover {
+    background: #bd3838;
+
+    transform: translateY(-1px);
+}
+
+
+.recommendation-btn span {
+    margin-left: 8px;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   DOCTORS
+========================= */
+
+.doctors-section {
+    margin-top: 38px;
+}
+
+
+.refresh-btn {
+    border: 1px solid #dce2e7;
+
+    background: white;
+
+    color: #53616d;
+
+    padding: 8px 13px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+}
+
+
+.refresh-btn:hover {
+    background: #f5f7f8;
+}
+
+
+.doctor-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+
+.doctor-card {
+    background: white;
+
+    border: 1px solid #e4e8ec;
+
+    border-radius: 9px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.doctor-avatar {
+    width: 42px;
+    height: 42px;
+
+    background: #e6f1ef;
+
+    color: #19786f;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+
+.doctor-info {
+    flex: 1;
+}
+
+
+.doctor-info h3 {
+    font-size: 13px;
+
+    margin-bottom: 4px;
+}
+
+
+.doctor-info p {
+    color: #7f8b95;
+
+    font-size: 10px;
+}
+
+
+.doctor-status {
+    font-size: 9px;
+
+    color: #299b6d;
+
+    background: #e8f7ef;
+
+    border-radius: 20px;
+
+    padding: 5px 8px;
+
+    font-weight: 600;
+}
+
+
+.doctor-status.busy {
+    color: #c17c20;
+
+    background: #fff4dd;
+}
+
+
+.loading {
+    grid-column: 1 / -1;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #89949d;
+
+    background: white;
+
+    border-radius: 8px;
+
+    border: 1px solid #e4e8ec;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(10, 22, 34, 0.55);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 500;
+}
+
+
+.modal-overlay.show {
+    display: flex;
+}
+
+
+.recommendation-modal {
+    width: 590px;
+
+    max-width: 92%;
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 28px;
+
+    position: relative;
+
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+
+.close-modal {
+    position: absolute;
+
+    right: 18px;
+    top: 15px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #7e8992;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+.modal-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.modal-warning {
+    width: 43px;
+    height: 43px;
+
+    background: #fde7e7;
+
+    color: #d64545;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+}
+
+
+.modal-title span {
+    color: #1b8b80;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    font-weight: 700;
+}
+
+
+.modal-title h2 {
+    font-size: 20px;
+
+    margin-top: 3px;
+}
+
+
+.modal-description {
+    color: #7e8992;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    margin: 18px 0;
+}
+
+
+.recommendation-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.recommendation {
+    border: 1px solid #e5e9ed;
+
+    border-radius: 8px;
+
+    padding: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.recommendation-icon {
+    width: 38px;
+    height: 38px;
+
+    background: #eef5f4;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+.recommendation div:nth-child(2) {
+    flex: 1;
+}
+
+
+.recommendation strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+
+.recommendation p {
+    color: #8b959e;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+
+    line-height: 1.4;
+}
+
+
+.recommendation-tag {
+    background: #fde8e8;
+
+    color: #cf4444;
+
+    font-size: 8px;
+
+    padding: 5px 8px;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+}
+
+
+.recommendation-tag.medium {
+    background: #fff3dc;
+
+    color: #bb7c1e;
+}
+
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+
+.cancel-btn,
+.apply-btn {
+    border-radius: 6px;
+
+    padding: 10px 14px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.cancel-btn {
+    border: 1px solid #dce2e7;
+
+    background: white;
+
+    color: #66737e;
+}
+
+
+.apply-btn {
+    border: none;
+
+    background: #1b8b80;
+
+    color: white;
+}
+
+
+.apply-btn:hover {
+    background: #14766d;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .resource-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .doctor-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .alert-body {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .surge-statistics {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 70px;
+
+        padding: 20px 8px;
+    }
+
+    .logo div:not(.logo-icon),
+    .nav-item:not(.active),
+    .nav-item {
+        font-size: 0;
+    }
+
+    .nav-item {
+        justify-content: center;
+    }
+
+    .nav-item span {
+        font-size: 17px;
+    }
+
+    .logo {
+        justify-content: center;
+
+        padding: 0 0 25px;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+
+    .topbar {
+        padding: 18px 20px;
+    }
+
+    .dashboard-container {
+        padding: 25px 20px;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .surge-statistics {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+        min-width: 0;
+    }
+
+    .vertical-divider {
+        display: none;
+    }
+
+    .alert-footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .recommendation-btn {
+        width: 100%;
+    }
+}
+    </style>
+</body>
+<body>
+    <script>
+        /* ==========================================
+   BACKEND CONFIGURATION
+========================================== */
+
+/*
+   Change this to the URL where your backend runs.
+
+   Example:
+   http://localhost:5000/api
+   http://localhost:3000/api
+*/
+
+const API_BASE_URL = "http://localhost:5000/api";
+
+
+/* ==========================================
+   PAGE INITIALIZATION
+========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadHospitalData();
+
+    loadDoctors();
+
+});
+
+
+/* ==========================================
+   GET LOGGED-IN HOSPITAL DATA
+========================================== */
+
+async function loadHospitalData() {
+
+    try {
+
+        /*
+           Example endpoint:
+
+           GET /api/hospital/profile
+
+           Your backend should return something like:
+
+           {
+               "id": "H001",
+               "name": "City General Hospital",
+               "location": "Coimbatore, Tamil Nadu",
+               "totalBeds": 120,
+               "emergencyBeds": 8,
+               "patientQueue": 27
+           }
+        */
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospital/profile`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Content-Type": "application/json",
+
+                    /*
+                       If your backend uses JWT:
+
+                       Authorization:
+                       `Bearer ${localStorage.getItem("token")}`
+                    */
+                },
+
+                credentials: "include"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to retrieve hospital information."
+            );
+
+        }
+
+
+        const hospital = await response.json();
+
+
+        /*
+           Hospital information
+        */
+
+        document.getElementById(
+            "hospitalLocation"
+        ).textContent =
+            `${hospital.name} • ${hospital.location}`;
+
+
+        /*
+           Hospital resources
+        */
+
+        document.getElementById(
+            "totalBeds"
+        ).textContent =
+            hospital.totalBeds ?? "--";
+
+
+        document.getElementById(
+            "emergencyBeds"
+        ).textContent =
+            hospital.emergencyBeds ?? "--";
+
+
+        document.getElementById(
+            "queueCount"
+        ).textContent =
+            hospital.patientQueue ?? "--";
+
+
+        /*
+           Admin information
+
+           If your backend returns adminName.
+        */
+
+        if (hospital.adminName) {
+
+            document.getElementById(
+                "adminName"
+            ).textContent =
+                hospital.adminName;
+
+
+            document.getElementById(
+                "profileAvatar"
+            ).textContent =
+                getInitials(hospital.adminName);
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Hospital data error:",
+            error
+        );
+
+        document.getElementById(
+            "hospitalLocation"
+        ).textContent =
+            "Unable to load hospital information";
+
+    }
+
+}
+
+
+/* ==========================================
+   GET DOCTORS FROM BACKEND
+========================================== */
+
+async function loadDoctors() {
+
+    const doctorGrid =
+        document.getElementById("doctorGrid");
+
+
+    doctorGrid.innerHTML = `
+        <div class="loading">
+            Loading doctors...
+        </div>
+    `;
+
+
+    try {
+
+        /*
+           Example backend endpoint:
+
+           GET /api/hospital/doctors
+
+           Expected response:
+
+           {
+               "doctors": [
+                   {
+                       "id": "D001",
+                       "name": "Dr. Arun Kumar",
+                       "specialization": "Cardiologist",
+                       "status": "Available"
+                   },
+
+                   {
+                       "id": "D002",
+                       "name": "Dr. Priya Sharma",
+                       "specialization": "Emergency Medicine",
+                       "status": "Busy"
+                   }
+               ]
+           }
+        */
+
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospital/doctors`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Content-Type": "application/json",
+
+                    /*
+                       JWT example:
+
+                       Authorization:
+                       `Bearer ${localStorage.getItem("token")}`
+                    */
+                },
+
+                credentials: "include"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to retrieve doctors."
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+           Support either:
+
+           { doctors: [...] }
+
+           or directly:
+
+           [...]
+        */
+
+        const doctors =
+            Array.isArray(data)
+                ? data
+                : data.doctors;
+
+
+        if (!doctors || doctors.length === 0) {
+
+            doctorGrid.innerHTML = `
+                <div class="loading">
+                    No doctors found for this hospital.
+                </div>
+            `;
+
+            document.getElementById(
+                "doctorCount"
+            ).textContent = "0";
+
+            return;
+        }
+
+
+        /*
+           Update doctor count
+        */
+
+        document.getElementById(
+            "doctorCount"
+        ).textContent =
+            doctors.length;
+
+
+        /*
+           Generate doctor cards
+        */
+
+        doctorGrid.innerHTML = "";
+
+
+        doctors.forEach(doctor => {
+
+            const card =
+                createDoctorCard(doctor);
+
+            doctorGrid.appendChild(card);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Doctor loading error:",
+            error
+        );
+
+
+        /*
+           For development only.
+
+           Remove this fallback once your
+           backend is connected.
+        */
+
+        doctorGrid.innerHTML = `
+            
+            <div class="doctor-card">
+
+                <div class="doctor-avatar">
+                    AK
+                </div>
+
+                <div class="doctor-info">
+
+                    <h3>
+                        Dr. Arun Kumar
+                    </h3>
+
+                    <p>
+                        Emergency Medicine
+                    </p>
+
+                </div>
+
+                <span class="doctor-status">
+                    Available
+                </span>
+
+            </div>
+
+
+            <div class="doctor-card">
+
+                <div class="doctor-avatar">
+                    PS
+                </div>
+
+                <div class="doctor-info">
+
+                    <h3>
+                        Dr. Priya Sharma
+                    </h3>
+
+                    <p>
+                        Cardiologist
+                    </p>
+
+                </div>
+
+                <span class="doctor-status busy">
+                    Busy
+                </span>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "doctorCount"
+        ).textContent = "2";
+
+    }
+
+}
+
+
+/* ==========================================
+   CREATE DOCTOR CARD
+========================================== */
+
+function createDoctorCard(doctor) {
+
+    const card =
+        document.createElement("div");
+
+
+    card.className =
+        "doctor-card";
+
+
+    const initials =
+        getInitials(
+            doctor.name
+        );
+
+
+    const status =
+        doctor.status || "Available";
+
+
+    const statusClass =
+        status.toLowerCase() === "available"
+            ? ""
+            : "busy";
+
+
+    card.innerHTML = `
+
+        <div class="doctor-avatar">
+            ${escapeHTML(initials)}
+        </div>
+
+
+        <div class="doctor-info">
+
+            <h3>
+                ${escapeHTML(doctor.name)}
+            </h3>
+
+            <p>
+                ${escapeHTML(
+                    doctor.specialization ||
+                    "Medical Department"
+                )}
+            </p>
+
+        </div>
+
+
+        <span class="doctor-status ${statusClass}">
+            ${escapeHTML(status)}
+        </span>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* ==========================================
+   RECOMMENDATIONS
+========================================== */
+
+function viewRecommendations() {
+
+    const modal =
+        document.getElementById(
+            "recommendationModal"
+        );
+
+
+    modal.classList.add("show");
+
+}
+
+
+/* ==========================================
+   CLOSE RECOMMENDATIONS
+========================================== */
+
+function closeRecommendations() {
+
+    document
+        .getElementById(
+            "recommendationModal"
+        )
+        .classList.remove("show");
+
+}
+
+
+/* ==========================================
+   APPLY RECOMMENDATIONS
+========================================== */
+
+async function applyRecommendations() {
+
+    /*
+       This is where you can connect the
+       recommendation engine/backend.
+
+       Example:
+
+       POST /api/hospital/recommendations/apply
+    */
+
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/hospital/recommendations/apply`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+
+                    alertType:
+                        "UNEXPECTED_DEMAND_SURGE",
+
+                    queueBefore: 27,
+
+                    queueCurrent: 41,
+
+                    emergencyBedsBefore: 8,
+
+                    emergencyBedsCurrent: 3,
+
+                    arrivalIncrease: 38
+
+                })
+            }
+        );
+
+
+        /*
+           If your endpoint does not exist yet,
+           the demo can still work.
+        */
+
+        if (response.ok) {
+
+            alert(
+                "Recommendations applied successfully."
+            );
+
+        }
+        else {
+
+            alert(
+                "Recommendation request sent."
+            );
+
+        }
+
+
+        closeRecommendations();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Recommendation error:",
+            error
+        );
+
+
+        /*
+           Demo behaviour
+        */
+
+        alert(
+            "Recommendations have been submitted for resource allocation."
+        );
+
+
+        closeRecommendations();
+
+    }
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+function logout() {
+
+    /*
+       If your authentication uses localStorage:
+
+       localStorage.removeItem("token");
+
+       If it uses a backend session,
+       call your logout endpoint here.
+    */
+
+
+    localStorage.removeItem("token");
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* ==========================================
+   UTILITY FUNCTIONS
+========================================== */
+
+function getInitials(name) {
+
+    if (!name) {
+        return "HA";
+    }
+
+
+    return name
+        .split(" ")
+        .map(word => word[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
+
+}
+
+
+/*
+   Prevent backend text from being inserted
+   directly as HTML.
+*/
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================== */
+
+document
+    .getElementById("recommendationModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeRecommendations();
+
+        }
+
+    });
+    </script>
+</body>
+</html>
